@@ -2848,7 +2848,10 @@ input, select, textarea {
 			}
 
 				.main.style2 a:hover {
-					transform: scale(1.25);
+					color: #ffffff;
+					transition-duration: 0.2s;
+          				transition-property: transform;
+					transform:scale(1.25)
 				}
 
 			.main.style2 h1, .main.style2 h2, .main.style2 h3, .main.style2 h4, .main.style2 h5, .main.style2 h6, .main.style2 strong, .main.style2 b {
