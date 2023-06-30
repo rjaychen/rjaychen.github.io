@@ -1,6 +1,6 @@
 @import url("all.min.css");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400,400italic");
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 /*
 	Photon by HTML5 UP
 	html5up.net | @ajlkn
@@ -99,7 +99,7 @@ input, select, textarea {
 
 	body, input, select, textarea {
 		color: #666;
-		font-family: "Source Sans Pro", Helvetica, sans-serif;
+		font-family: "Inter", Segoe UI, "Source Sans Pro", Helvetica, sans-serif;
 		font-size: 16pt;
 		font-weight: 300;
 		line-height: 1.65em;
