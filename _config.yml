@@ -16,8 +16,6 @@ menu:
     url: /about
   - title: Contact
     url: /contact
-  - title: Feed
-    url: /feed.xml
 email: ryanjaychen@gmail.com
 # See: https://disqus.com/
 disqus_username: ##
@@ -108,4 +106,4 @@ exclude: [
 ]
 
 # Theme
-version: v3.1.2
+version: v1.0.0
