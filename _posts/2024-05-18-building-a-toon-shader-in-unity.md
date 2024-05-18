@@ -6,7 +6,7 @@ subtitle: My voyage into the shader pipeline with Unity
 description: How I learned how to develope shaders in Unity using various lighting, shading, and post-processing effects for a desired NPR look.
 image: https://roystan.net/media/tutorials/toon-shader-demo.png
 optimized_image: https://roystan.net/media/tutorials/toon-shader-demo.png
-category:
+category: cg
 tags: 
  - blog
  - cg
