@@ -18,8 +18,11 @@ I love drawing, music, playing piano, running, and watching TV shows. Feel free 
 Email: **ryan.j.chen@duke.edu**
 
 ## Education
+
 | Duke University | 2021 - 2025 |
+
 ## Experience
+
 | Position | Employer | Time |
 | -------- | -------- | ---- |
 | Undergraduate Researcher | [I^3T Lab](https://maria.gorlatova.com/current-research/) | Summer 2024
