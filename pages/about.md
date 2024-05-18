@@ -19,7 +19,9 @@ Email: **ryan.j.chen@duke.edu**
 
 ## Education
 
-| Duke University | 2021 - 2025 |
+| Degree | School | Time |
+| ------ | ------ | ---- |
+| B.S. in Engineering | Duke University | 2021 - 2025 |
 
 ## Experience
 
