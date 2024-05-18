@@ -1,8 +1,7 @@
 # Site Settings
-name: Jekflix
-title: Jekflix | A blog theme for Jekyll
-description: Jekflix is a template for Jekyll inspired by Netflix and made by
-  Thiago Rossener.
+name: RJC
+title: Ryan J. Chen's Website
+description: RJC's personal website
 tags:
   - blog
   - template
@@ -19,9 +18,9 @@ menu:
     url: /contact
   - title: Feed
     url: /feed.xml
-email: youremail@test.com
+email: ryanjaychen@gmail.com
 # See: https://disqus.com/
-disqus_username: disqus_username
+disqus_username: ##
 # Contact Form Setting
 # See: https://formspree.io/
 formspree_form_id: formspree_form_id
@@ -29,13 +28,12 @@ formspree_form_id: formspree_form_id
 
 # Social Media Settings
 # Remove the item if you don't need it
-github_username: github_username
-facebook_username: facebook_username
-twitter_username: twitter_username
-instagram_username: instagram_username
-linkedin_username: linkedin_username
-medium_username: medium_username
-
+github_username: rjaychen
+facebook_username: 
+twitter_username: 
+instagram_username: 
+linkedin_username: ryanjaychen
+medium_username: 
 
 # Posts Settings
 show_time_bar: true
