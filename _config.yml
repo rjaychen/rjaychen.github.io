@@ -21,7 +21,7 @@ email: ryanjaychen@gmail.com
 disqus_username: ##
 # Contact Form Setting
 # See: https://formspree.io/
-formspree_form_id: formspree_form_id
+formspree_form_id: 
 
 
 # Social Media Settings
@@ -37,7 +37,7 @@ medium_username:
 show_time_bar: true
 show_modal_on_exit: false
 show_modal_on_finish_post: true
-two_columns_layout: true
+two_columns_layout: false
 
 
 # Advanced Settings

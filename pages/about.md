@@ -7,7 +7,7 @@ description: About Me!
 permalink: /about/
 ---
 
-<img class="img-rounded" src="/assets/img/uploads/profile.png" alt="Ryan J. Chen" width="200">
+<img class="img-rounded" src="/assets/img/uploads/penguin.png" alt="Ryan J. Chen" width="200">
 
 # About
 
@@ -18,7 +18,9 @@ I love drawing, music, playing piano, running, and watching TV shows. Feel free 
 Email: **ryan.j.chen@duke.edu**
 
 ## Education
-- Duke University | 2021 - 2025
+| Duke University | 2021 - 2025 |
 ## Experience
-- Undergraduate Researcher, I^3T Lab | Summer 2024
-- Software Quality Engineering Intern, Align Technology | Summer 2023
+| Position | Employer | Time |
+| -------- | -------- | ---- |
+| Undergraduate Researcher | [I^3T Lab](https://maria.gorlatova.com/current-research/) | Summer 2024
+| Software Quality Engineering Intern | Align Technology | Summer 2023 |

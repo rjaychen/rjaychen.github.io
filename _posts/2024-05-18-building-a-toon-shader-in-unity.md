@@ -8,7 +8,6 @@ image: https://roystan.net/media/tutorials/toon-shader-demo.png
 optimized_image: https://roystan.net/media/tutorials/toon-shader-demo.png
 category:
 tags: 
- - welcome
  - blog
  - cg
  - unity
@@ -37,8 +36,10 @@ I want to focus on a comic-book inspired art style shader that looks like someth
 **add image here**
 
 ### Basic Lambert (Diffuse) Lighting
+[!NOTE]
 [Wiki: Lambertian Light](https://en.wikipedia.org/wiki/Lambertian_reflectance)
 ### Specular Lighting
+[!NOTE]
 [Wiki: Phong model](https://en.wikipedia.org/wiki/Phong_reflection_model)
 
 --page-break--
