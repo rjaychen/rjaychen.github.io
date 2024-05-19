@@ -109,11 +109,28 @@ Emissive light is the light given off by the object, e.g. "glowing" from the obj
 
 Now that we have some basic lighting down, let's get to the fun part: toonifying!
 
---page-break--
+
 
 ## Next Steps: Toonifying
+
+Let's get started with the toon part!
+
+Firstly, a large part of achieving a non-photo realistic look is restricting the number of colors in our palette - this is called [**Cel shading**](https://en.wikipedia.org/wiki/Cel_shading). A super easy implementation of cel shading is to floor, ceiling, or round intensity values from the light source (the only difference is a shift in where shading begins), and then use a step function to find the appropriate color to match the intensity with.  
+
+![Step Inking](https://panthavma.com/articles/shading/toonshading/CelCode.png)
+> Using a step/smoothstep function for Cel Shading
+> Credit: Panthavma
+
 ### Ramp Lighting / Inking
+
+Another method we could use is **ramp lighting**, which relies on a ramp, or a 1D texture that matches a light intensity to a color ramp. In this way, we can specify what colors we want our shadows to be, and have greater control over the colors within the light falloff.
+
+![Toon Ramp](https://panthavma.com/articles/shading/toonshading/ISLinearConst.png) ![Toon Ramp 2](https://panthavma.com/articles/shading/toonshading/ISTwoToneColorPlus.png)
+> Ramp Lighting in Action
+> Credit: Panthavma
+
 ![Ramp Lighting Example](/assets/img/shader_blog/inking.png)
+
 ### Crosshatching
 ![Crosshatching Example](/assets/img/shader_blog/crosshatching.png)
 ### Outlines
@@ -123,11 +140,11 @@ Now that we have some basic lighting down, let's get to the fun part: toonifying
 ### Rim Lighting
 ![Rim Lighting Example](/assets/img/shader_blog/rims.png)
 
---page-break--
+
 
 ## Conclusions
 
---page-break--
+
 
 ## Future Work
 So, that's it for now! I have a huge list of topics I want to visit and explore next, and also improve on the toon shader. Here's a short list of some topics I want to get into:
