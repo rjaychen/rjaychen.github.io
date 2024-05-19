@@ -25,7 +25,8 @@ I couple resources that greatly expanded my understanding:
 - [Real Time Rendering 4](https://www.realtimerendering.com/)
 
 From these resources, I present the following simplified model of how modern GPU's work:
-Vertex Data --> Vertex Shader --> (Geometry Shader) --> Primitive Setup & Rasterization --> Fragment Shader --> Blending --> Output
+
+**Vertex Data --> Vertex Shader --> (Geometry Shader) --> Primitive Setup & Rasterization --> Fragment Shader --> Blending --> Output**
 - Vertex Shader: Takes in vertices and constructs edges, triangles, and other primitives to be used by the fragment shader, which will do math and calculate the color to display per pixel.
 - Geometry Shader: Processes entire primitives and is not limited in output, but also typically expensive to use.
 - Fragment Shader: Generates colors per fragment (pixel).
@@ -51,6 +52,8 @@ I want to focus on a comic-book inspired art style shader that looks like someth
 
 Constructing advanced effects involves combining several substeps that are easier to understand. In Shader Graph, the idea of abstraction becomes highly relevant as substeps can be converted to subgraphs. For a toon shader, I will outline these "substeps" in stages.
 
+![](https://media2.firstshowing.net/firstshowing/img15/SpidermanAcrossSpidermainimg591.jpg)
+
 ### Basic Lambert (Diffuse) Lighting
 
 [Wiki: Lambertian Light](https://en.wikipedia.org/wiki/Lambertian_reflectance)
@@ -69,7 +72,7 @@ Where $L$ is the normalized light direction vecetor, $N$ is the unit normal vect
 #### Intensity in Real Life
 Unfortunately, intensity levels are not constrained between 0 and 1 in real life. In an outdoor environnment, they easily exceed the ideal levels we like to use in Computer Graphics. To solve this problem for photorealistic applications, lighting is often rendered in High Dynamic Range (HDR) or uses Tone Mapping to address the issues of exceeding intensities. In our case, we clamp the result of the dot product $N \dot L$ between 0 and 1. 
 
-![Diffuse Lighting Example](assets/img/shader_blog/diffuse.png)
+![Diffuse Lighting Example](/assets/img/shader_blog/diffuse.png)
 
 ### Specular Lighting
 [Wiki: Phong model](https://en.wikipedia.org/wiki/Phong_reflection_model)
