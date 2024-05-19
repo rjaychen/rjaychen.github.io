@@ -121,7 +121,7 @@ Now that we have some basic lighting down, let's get to the fun part: toonifying
 ### Stippling
 ![Specular Lighting Example](/assets/img/shader_blog/stippling.png)
 ### Rim Lighting
-![Rim Lighting Example]()
+![Rim Lighting Example](/assets/img/shader_blog/rims.png)
 
 --page-break--
 
