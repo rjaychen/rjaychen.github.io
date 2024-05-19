@@ -129,8 +129,10 @@ Another method we could use is **ramp lighting**, which relies on a ramp, or a 1
 > Ramp Lighting in Action <br>
 > Credit: Panthavma
 
-![Ramp Lighting Example](/assets/img/shader_blog/inking.png)
+In Unity with Shader Graph, the effect can be achieved by converting RGBA (red, green, blue, alpha) -> HSV (hue, saturation, value), where value is the measure of light intensity. *Note that when using the Split node in Shader Graph, V is mapped to an output of B.* The value is inputted into the ramp, in the form of a simple gradient, where the artist/user can specify the color scheme for the shader. Finally, we reconvert the HSV -> RGB and use the output as our color. 
 
+![Ramp Lighting Example](/assets/img/shader_blog/inking.png)
+> You can now easily see the color palette chosen by sampling from using ramp lighting.
 ### Crosshatching
 ![Crosshatching Example](/assets/img/shader_blog/crosshatching.png)
 ### Outlines
