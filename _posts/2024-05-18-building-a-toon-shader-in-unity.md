@@ -27,7 +27,7 @@ A couple resources that greatly expanded my understanding:
 
 From these resources, I present the following simplified model of how modern GPU's work:
 
-$$ Vertex Data \rightarrow Vertex Shader \rightarrow (Geometry Shader) \rightarrow Primitive Setup/Rasterization \rightarrow Fragment Shader \rightarrow Blending \rightarrow Output$$ 
+$$ \text{Vertex Data} \rightarrow \text{Vertex Shader} \rightarrow \text{(Geometry Shader)} \rightarrow \text{Primitive Setup/Rasterization} \rightarrow \text{Fragment Shader} \rightarrow \text{Blending} \rightarrow \text{Output}$$ 
 
 - Vertex Shader: Takes in vertices and constructs edges, triangles, and other primitives to be used by the fragment shader, which will do math and calculate the color to display per pixel.
 - Geometry Shader: Processes entire primitives and is not limited in output, but also typically expensive to use.
