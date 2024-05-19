@@ -93,9 +93,10 @@ Here, the user has defined the specular light in the input `Specular`, and the `
 
 $$ specular = C \times K_{s} \times (N \cdot H)^{smoothness}$$
 
-where $C$ is the light color, $N$ is the unit normal vector, and $H$ is the unit halfway vector between the view direction and the light direction. Note that we also clamp the term $N \cdot H$ here. 
+where $C$ is the light color, $N$ is the unit normal vector, $H$ is the unit halfway vector between the view direction and the light direction, and $smoothness$ defines how shiny a surface is. Note that we also clamp the term $N \cdot H$ here. 
 
 ![Specular Lighting Example](/assets/img/shader_blog/specular.png)
+> The lighting might be hard to see here, but it usually appears as the bright white dots or lines that are directed towards the light source. Once we begin clamping intensity values in the toonifying part, they should be easier to see.
 
 Now that we have some basic lighting down, let's get to the fun part: toonifying!
 
