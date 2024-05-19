@@ -60,8 +60,8 @@ Constructing advanced effects involves combining several substeps that are easie
 
 [Wiki: Lambertian Light](https://en.wikipedia.org/wiki/Lambertian_reflectance)
 
->[!TIP]
->The Basic Lighting Model: surfaceColor = emissive + ambient + diffuse + specular
+> [!TIP]
+> The Basic Lighting Model: surfaceColor = emissive + ambient + diffuse + specular
 
 Diffuse lighting is the result of directed light reflecting off a surface equally in all directions. The Lambertian reflectance model provides a simple mathematical equation to calculate diffuse lighting. As a surface is tilted away from perpendicular to the light, its reflection decreases. Given a vector B and its unit direction B', the dot product of any vector A with B' provides the projection of A onto B. Essentially, the dot product allows us to determine the parallelism of two vectors with each other. 
 
