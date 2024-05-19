@@ -20,13 +20,14 @@ This marks my first step into developing my skills with Unity URP and shader gra
 
 ## An Preface into the Graphics Rendering Pipeline
 
-I couple resources that greatly expanded my understanding: 
+A couple resources that greatly expanded my understanding: 
 - [Cem Yuksel's CG course @ Utah](https://www.youtube.com/watch?v=vLSphLtKQ0o&list=PLplnkTzzqsZTfYh4UbhLGpI5kGd5oW_Hh) 
 - [Real Time Rendering 4](https://www.realtimerendering.com/)
 
 From these resources, I present the following simplified model of how modern GPU's work:
 
-**Vertex Data --> Vertex Shader --> (Geometry Shader) --> Primitive Setup & Rasterization --> Fragment Shader --> Blending --> Output**
+$$ \text{Vertex Data} \rightarrow \text{Vertex Shader} \rightarrow \text{(Geometry Shader)} \rightarrow \text{Primitive Setup & Rasterization} \rightarrow \text{Fragment Shader} \rightarrow \text{Blending} \rightarrow \text{Output} $$
+
 - Vertex Shader: Takes in vertices and constructs edges, triangles, and other primitives to be used by the fragment shader, which will do math and calculate the color to display per pixel.
 - Geometry Shader: Processes entire primitives and is not limited in output, but also typically expensive to use.
 - Fragment Shader: Generates colors per fragment (pixel).
