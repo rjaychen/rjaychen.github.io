@@ -15,6 +15,7 @@ tags:
  - csharp
 author: rjaychen
 paginate: true
+math: true
 ---
 This marks my first step into developing my skills with Unity URP and shader graphics. I'll be highlighting some of the techniques I've learned here. 
 
@@ -26,7 +27,7 @@ A couple resources that greatly expanded my understanding:
 
 From these resources, I present the following simplified model of how modern GPU's work:
 
-$$ Vertex Data \rightarrow Vertex Shader \rightarrow (Geometry Shader) \rightarrow Primitive Setup & Rasterization \rightarrow Fragment Shader \rightarrow Blending \rightarrow Output $$
+**Vertex Data --> Vertex Shader --> (Geometry Shader) --> Primitive Setup & Rasterization --> Fragment Shader --> Blending --> Output**
 
 - Vertex Shader: Takes in vertices and constructs edges, triangles, and other primitives to be used by the fragment shader, which will do math and calculate the color to display per pixel.
 - Geometry Shader: Processes entire primitives and is not limited in output, but also typically expensive to use.
@@ -66,7 +67,7 @@ Diffuse lighting is the result of directed light reflecting off a surface equall
 
 Using these principles we obtain the following equation: 
 
-$$ K_{d} = L \dot N \times C \times I_{L} $$
+$$ K_{d} = L \cdot N \times C \times I_{L} $$
 
 Where $L$ is the normalized light direction vecetor, $N$ is the unit normal vector of the surface, $C$ is the color of the light, and $I_{L}$ is the intensity of the light source. 
 
