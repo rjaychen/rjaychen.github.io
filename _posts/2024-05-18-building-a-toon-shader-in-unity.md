@@ -71,6 +71,7 @@ $$ K_{d} = L \cdot N \times C \times I_{L} $$
 
 Where $L$ is the normalized light direction vector, $N$ is the unit normal vector of the surface, $C$ is the color of the light, and $I_{L}$ is the intensity of the light source. 
 
+![Diffuse Example](https://developer.download.nvidia.com/CgTutorial/elementLinks/fig5_7.jpg)
 #### Intensity in Real Life
 Unfortunately, intensity levels are not constrained between 0 and 1 in real life. In an outdoor environnment, they easily exceed the ideal levels we like to use in Computer Graphics. To solve this problem for photorealistic applications, lighting is often rendered in High Dynamic Range (HDR) or uses Tone Mapping to address the issues of exceeding intensities. In our case, we clamp the result of the dot product $N \cdot L$ between 0 and 1. 
 
@@ -91,6 +92,8 @@ Out = LightingSpecular(Color, Direction, WorldNormal, WorldView, half4(Specular,
 ```
 Here, the user has defined the specular light in the input `Specular`, and the `LightingSpecular` function executes the following equation: 
 
+![Specular Diagram](https://developer.download.nvidia.com/CgTutorial/elementLinks/fig5_13.jpg)
+
 $$ specular = C \times K_{s} \times (N \cdot H)^{smoothness}$$
 
 where $C$ is the light color, $N$ is the unit normal vector, $H$ is the unit halfway vector between the view direction and the light direction, and $smoothness$ defines how shiny a surface is. Note that we also clamp the term $N \cdot H$ here. 
@@ -98,14 +101,27 @@ where $C$ is the light color, $N$ is the unit normal vector, $H$ is the unit hal
 ![Specular Lighting Example](/assets/img/shader_blog/specular.png)
 > The lighting might be hard to see here, but it usually appears as the bright white dots or lines that are directed towards the light source. Once we begin clamping intensity values in the toonifying part, they should be easier to see.
 
+### Ambient and Emissive Lighting
+
+Ambient light is the light scattered from around the environment onto our surface. In Shader Graph, this is handled by Global Illumination values that are baked onto the surface of an object. The exact implementation is different per render pipeline. 
+
+Emissive light is the light given off by the object, e.g. "glowing" from the object. For our purposes, we won't consider this for now, but I might look into some interesting cases of emissive light in the future.
+
 Now that we have some basic lighting down, let's get to the fun part: toonifying!
 
 --page-break--
 
 ## Next Steps: Toonifying
+### Ramp Lighting / Inking
+![Ramp Lighting Example](/assets/img/shader_blog/inking.png)
 ### Crosshatching
+![Crosshatching Example](/assets/img/shader_blog/crosshatching.png)
 ### Outlines
+![Outlines Example](/assets/img/shader_blog/outlines.png)
 ### Stippling
+![Specular Lighting Example](/assets/img/shader_blog/specular.png)
+### Rim Lighting
+![Rim Lighting Example]()
 
 --page-break--
 
@@ -114,3 +130,17 @@ Now that we have some basic lighting down, let's get to the fun part: toonifying
 --page-break--
 
 ## Future Work
+So, that's it for now! I have a huge list of topics I want to visit and explore next, and also improve on the toon shader. Here's a short list of some topics I want to get into:
+- Dithering
+- Custom Renderers
+- Photorealistic Shaders
+- Raytracing
+- Vector Colors
+- More UV Maps and Textures
+- Edge Detection with Sobel
+- Chromatic Aberration
+- Anti-Aliasing
+- Streamline Hatching
+- and more...
+
+Thanks for reading!
