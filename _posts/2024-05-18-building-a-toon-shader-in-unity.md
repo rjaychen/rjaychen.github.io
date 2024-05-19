@@ -27,7 +27,7 @@ A couple resources that greatly expanded my understanding:
 
 From these resources, I present the following simplified model of how modern GPU's work:
 
-**Vertex Data --> Vertex Shader --> (Geometry Shader) --> Primitive Setup & Rasterization --> Fragment Shader --> Blending --> Output**
+$$ Vertex Data \rightarrow Vertex Shader \rightarrow (Geometry Shader) \rightarrow Primitive Setup & Rasterization \rightarrow Fragment Shader \rightarrow Blending \rightarrow Output$$ 
 
 - Vertex Shader: Takes in vertices and constructs edges, triangles, and other primitives to be used by the fragment shader, which will do math and calculate the color to display per pixel.
 - Geometry Shader: Processes entire primitives and is not limited in output, but also typically expensive to use.
@@ -69,7 +69,7 @@ Using these principles we obtain the following equation:
 
 $$ K_{d} = L \cdot N \times C \times I_{L} $$
 
-Where $L$ is the normalized light direction vecetor, $N$ is the unit normal vector of the surface, $C$ is the color of the light, and $I_{L}$ is the intensity of the light source. 
+Where $L$ is the normalized light direction vector, $N$ is the unit normal vector of the surface, $C$ is the color of the light, and $I_{L}$ is the intensity of the light source. 
 
 #### Intensity in Real Life
 Unfortunately, intensity levels are not constrained between 0 and 1 in real life. In an outdoor environnment, they easily exceed the ideal levels we like to use in Computer Graphics. To solve this problem for photorealistic applications, lighting is often rendered in High Dynamic Range (HDR) or uses Tone Mapping to address the issues of exceeding intensities. In our case, we clamp the result of the dot product $N \dot L$ between 0 and 1. 
