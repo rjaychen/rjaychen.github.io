@@ -133,6 +133,7 @@ In Unity with Shader Graph, the effect can be achieved by converting RGBA (red, 
 
 ![Ramp Lighting Example](/assets/img/shader_blog/inking.png)
 > You can now easily see the color palette chosen by sampling from using ramp lighting.
+
 ### Crosshatching
 ![Crosshatching Example](/assets/img/shader_blog/crosshatching.png)
 ### Outlines
