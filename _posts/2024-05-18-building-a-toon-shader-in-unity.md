@@ -138,7 +138,16 @@ In Unity with Shader Graph, the effect can be achieved by:
 > You can now easily see the color palette chosen by sampling from using ramp lighting.
 
 ### Crosshatching
+
+Ooooo, this is a tough one. A simple cross hatch is easy to achieve, but the problem is that crosshatching is very intentional when sketching and drawing. Achieving realistic crosshatching is likely very costly, and might still require human input, however there are algorithms out there that attempt more realistic crosshatching. From what I've seen from most toon shaders, they either neglect the entire prospect of crosshatching, or use a relatively simple implementation to achieve a desired look. In fact, [observing the Spiderverse movies themselves](https://youtu.be/l-wUKu_V2Lk?si=2u6KnEjtU492ORl3), I found that the hatching mainly flows in a single direction. For more realistic strokes and inklines, the creators used Machine Learning [(and Blender!)](https://youtu.be/8yHuJLeAAsA?si=E1FBtpbFRB6CVhQS) to reproduce a handdrawn look. Cool!
+
+Many of the basic tutorials you will find on crosshatching suggest using a texture with UV mapping to draw patterns onto the object itself based on lighting conditions, however I would suggest against doing this personally, because I don't think it looks as good. Instead, one could use a procedural method of generating patterns, using nodes or functions already present in Shader Graph and HLSL, and applying those patterns to the Toon Ramps mentioned in the previous section, so that we target similar regions of darkness for crosshatching. I think its also nice to add some user exposed properties here to control the exact look of hatching for the shader.
+
+I used a stripes pattern angled based on the view position, and created another stripes instance perpendicular, then played around with gradient settings such that there was a slight mismatch in where each direction would appear. I think this is an artistic choice and could be modified for different use cases.
+
 ![Crosshatching Example](/assets/img/shader_blog/crosshatching.png)
+> The crosshatch frequency controls the number of lines that appear in the shadow of the object.
+
 ### Outlines
 ![Outlines Example](/assets/img/shader_blog/outlines.png)
 ### Stippling
