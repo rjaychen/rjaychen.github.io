@@ -54,13 +54,13 @@ I want to focus on a comic-book inspired art style shader that looks like someth
 
 Constructing advanced effects involves combining several substeps that are easier to understand. In Shader Graph, the idea of abstraction becomes highly relevant as substeps can be converted to subgraphs. For a toon shader, I will outline these "substeps" in stages.
 
-![](https://media2.firstshowing.net/firstshowing/img15/SpidermanAcrossSpidermainimg591.jpg)
+![SpiderverseExample](https://media2.firstshowing.net/firstshowing/img15/SpidermanAcrossSpidermainimg591.jpg)
 
 ### Basic Lambert (Diffuse) Lighting
 
 [Wiki: Lambertian Light](https://en.wikipedia.org/wiki/Lambertian_reflectance)
 
-> A quick note! The basic lighting model uses:
+> A quick note! The basic lighting model uses: <br>
 > surfaceColor = emissive + ambient + diffuse + specular
 
 Diffuse lighting is the result of directed light reflecting off a surface equally in all directions. The Lambertian reflectance model provides a simple mathematical equation to calculate diffuse lighting. As a surface is tilted away from perpendicular to the light, its reflection decreases. Given a vector B and its unit direction B', the dot product of any vector A with B' provides the projection of A onto B. Essentially, the dot product allows us to determine the parallelism of two vectors with each other. 
@@ -76,7 +76,7 @@ Where $L$ is the normalized light direction vector, $N$ is the unit normal vecto
 Unfortunately, intensity levels are not constrained between 0 and 1 in real life. In an outdoor environnment, they easily exceed the ideal levels we like to use in Computer Graphics. To solve this problem for photorealistic applications, lighting is often rendered in High Dynamic Range (HDR) or uses Tone Mapping to address the issues of exceeding intensities. In our case, we clamp the result of the dot product $N \cdot L$ between 0 and 1. 
 
 ![Diffuse Lighting Example](/assets/img/shader_blog/diffuse.png)
-> I'll be using some basic shapes, along with the Utah Teapot, to test my shader.
+> I'll be using some basic shapes, along with the Utah Teapot, to test my shader and its evolution. 
 
 ### Specular Lighting
 [Wiki: Phong model](https://en.wikipedia.org/wiki/Phong_reflection_model)
@@ -118,7 +118,7 @@ Let's get started with the toon part!
 Firstly, a large part of achieving a non-photo realistic look is restricting the number of colors in our palette - this is called [**Cel shading**](https://en.wikipedia.org/wiki/Cel_shading). A super easy implementation of cel shading is to floor, ceiling, or round intensity values from the light source (the only difference is a shift in where shading begins), and then use a step function to find the appropriate color to match the intensity with.  
 
 ![Step Inking](https://panthavma.com/articles/shading/toonshading/CelCode.png)
-> Using a step/smoothstep function for Cel Shading
+> Using a step/smoothstep function for Cel Shading <br>
 > Credit: Panthavma
 
 ### Ramp Lighting / Inking
@@ -126,7 +126,7 @@ Firstly, a large part of achieving a non-photo realistic look is restricting the
 Another method we could use is **ramp lighting**, which relies on a ramp, or a 1D texture that matches a light intensity to a color ramp. In this way, we can specify what colors we want our shadows to be, and have greater control over the colors within the light falloff.
 
 ![Toon Ramp](https://panthavma.com/articles/shading/toonshading/ISLinearConst.png) ![Toon Ramp 2](https://panthavma.com/articles/shading/toonshading/ISTwoToneColorPlus.png)
-> Ramp Lighting in Action
+> Ramp Lighting in Action <br>
 > Credit: Panthavma
 
 ![Ramp Lighting Example](/assets/img/shader_blog/inking.png)
