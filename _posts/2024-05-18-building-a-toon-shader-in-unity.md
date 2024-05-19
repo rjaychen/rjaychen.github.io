@@ -60,8 +60,8 @@ Constructing advanced effects involves combining several substeps that are easie
 
 [Wiki: Lambertian Light](https://en.wikipedia.org/wiki/Lambertian_reflectance)
 
-> [!TIP]
-> The Basic Lighting Model: surfaceColor = emissive + ambient + diffuse + specular
+> A quick note! The basic lighting model uses:
+> surfaceColor = emissive + ambient + diffuse + specular
 
 Diffuse lighting is the result of directed light reflecting off a surface equally in all directions. The Lambertian reflectance model provides a simple mathematical equation to calculate diffuse lighting. As a surface is tilted away from perpendicular to the light, its reflection decreases. Given a vector B and its unit direction B', the dot product of any vector A with B' provides the projection of A onto B. Essentially, the dot product allows us to determine the parallelism of two vectors with each other. 
 
@@ -72,12 +72,32 @@ $$ K_{d} = L \cdot N \times C \times I_{L} $$
 Where $L$ is the normalized light direction vector, $N$ is the unit normal vector of the surface, $C$ is the color of the light, and $I_{L}$ is the intensity of the light source. 
 
 #### Intensity in Real Life
-Unfortunately, intensity levels are not constrained between 0 and 1 in real life. In an outdoor environnment, they easily exceed the ideal levels we like to use in Computer Graphics. To solve this problem for photorealistic applications, lighting is often rendered in High Dynamic Range (HDR) or uses Tone Mapping to address the issues of exceeding intensities. In our case, we clamp the result of the dot product $N \dot L$ between 0 and 1. 
+Unfortunately, intensity levels are not constrained between 0 and 1 in real life. In an outdoor environnment, they easily exceed the ideal levels we like to use in Computer Graphics. To solve this problem for photorealistic applications, lighting is often rendered in High Dynamic Range (HDR) or uses Tone Mapping to address the issues of exceeding intensities. In our case, we clamp the result of the dot product $N \cdot L$ between 0 and 1. 
 
 ![Diffuse Lighting Example](/assets/img/shader_blog/diffuse.png)
+> I'll be using some basic shapes, along with the Utah Teapot, to test my shader.
 
 ### Specular Lighting
 [Wiki: Phong model](https://en.wikipedia.org/wiki/Phong_reflection_model)
+
+The Phong model is superceded by the [Blinn-Phong model](https://en.wikipedia.org/wiki/Blinn%E2%80%93Phong_reflection_model), an approximation that proves to be better in many cases, but the basic Phong model is also suitable, and describes surface light as the combination of ambient, diffuse, and specular lighting. **Specular Lighting**, or specular reflection, is the mirror-like reflection of light on a surface. This type of lighting relies on vectors pointing towards the viewer, or in our case, the camera.
+
+In HLSL, this looks like the following: 
+```
+Smoothness = exp2(10 * Smoothness + 1);
+WorldNormal = normalize(WorldNormal);
+WorldView = SafeNormalize(WorldView);
+Out = LightingSpecular(Color, Direction, WorldNormal, WorldView, half4(Specular, 0), Smoothness); 
+```
+Here, the user has defined the specular light in the input `Specular`, and the `LightingSpecular` function executes the following equation: 
+
+$$ specular = C \times K_{s} \times (N \cdot H)^{smoothness}$$
+
+where $C$ is the light color, $N$ is the unit normal vector, and $H$ is the unit halfway vector between the view direction and the light direction. Note that we also clamp the term $N \cdot H$ here. 
+
+![Specular Lighting Example](/assets/img/shader_blog/specular.png)
+
+Now that we have some basic lighting down, let's get to the fun part: toonifying!
 
 --page-break--
 
