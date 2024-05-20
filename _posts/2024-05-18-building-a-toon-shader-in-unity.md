@@ -149,17 +149,44 @@ I used a stripes pattern angled based on the view position, and created another 
 > The crosshatch frequency controls the number of lines that appear in the shadow of the object.
 
 ### Outlines
-![Outlines Example](/assets/img/shader_blog/outlines.png)
-### Stippling
-![Specular Lighting Example](/assets/img/shader_blog/stippling.png)
-### Rim Lighting
-![Rim Lighting Example](/assets/img/shader_blog/rims.png)
+[Wiki: Back-face culling](https://en.wikipedia.org/wiki/Back-face_culling)
 
+I used an **inverted hull** method to implement outlines for my toon shader. I thought this was the simplest method to create outlines, because of its intuitive nature, however, there is a separate method that uses more math with normals to produce outlines, and is generally a more robust method for drawing toon-like outlines. In Shader Graph, we use front face culling to generate an extruded outline shape so that only the outline is drawn, rather than the object itself, taking normals and positions in object space and adding them to get the outline. The result is also scaled by thickness and multiplied by color properties to provide more control over the desired effect.  
+
+![Outlines Example](/assets/img/shader_blog/outlines.png)
+> Outlines made using the inverted hull method. These outlines do not draw properly under certain positioning conditions, something I'd want to explore more in the future.
+
+### Stippling
+
+**Stippling** is a technique used to mimic effects of shading by patterning of small dots on the screen. In many ways, the process of creating stippling patterns is similar to cross hatching, but for reflective specular lighting rather than shadows. As such, we can ramp light the specular light outputted from the shader, then apply a procedurrally created pattern of dots to create the desired effect.
+
+![Specular Lighting Example](/assets/img/shader_blog/stippling.png)
+> Specular Lighting + Stippling! We are almost done with the toon shader.
+
+### Rim Lighting
+
+[Wiki: Fresnel effect](https://en.wikipedia.org/wiki/Fresnel_equations) 
+
+The final effect of our toon shader, **rim lighting**, has to do with the bright reflective light on the edges of surfaces and objects when viewed at different angles. Rim lighting is described by the **Fresnel equations**, since in rim lighting, light hits objects at near-grazing angles, or angles of incidence near 90 degrees to the light source. The Fresnel equations characterize how reflectivity of light increases as the angle of incidence approaches the grazing angle. 
+
+A simple math equation to represent Fresnel Lighting is as follows: 
+$$
+K_{f} = (1 - \text{saturate}(N \cdot V))^{power} 
+$$
+
+Here, you can see how the lighting increases as the angle between $N$ and $V$ widens. 
+
+I'm not sure of the exact implementation of Fresnel Lighting in Shader Graph, but I assume it is something along the line's of [Schlick's approximation](https://en.wikipedia.org/wiki/Schlick%27s_approximation)
+
+![Rim Lighting Example](/assets/img/shader_blog/rims.png)
+> And here's the final effect!
 
 
 ## Conclusions
 
+I had a great time working with toon lighting and toon shaders, and this process has inspired me to continue working on improving my programming abilities and graphics understanding. I didn't have to code too much in this project, but I'm hoping to code more on whatever I decide to work on next.
 
+There are also a few topics I'd like to revisit later. For example, the method for generating outlines is not as robust as I'd like it to be, and I think I would spend some time creating a more precise model for generating outlines using Depth Normals. Also, I want to improve or modify the crosshatching technique to create more sketchlike hatches, instead of the perfect 45 degree aligned hatches that are found in my shader right now.
 
 ## Future Work
 So, that's it for now! I have a huge list of topics I want to visit and explore next, and also improve on the toon shader. Here's a short list of some topics I want to get into:
