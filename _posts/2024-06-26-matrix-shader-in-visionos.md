@@ -29,6 +29,6 @@ Firstly, I played around with the shader code in metal to reproduce a similar ef
 
 ## Spatial Mesh Creation
 I had previously worked a lot on the HoloLens 2 with MRTK to access spatial meshes at runtime and retexture them, so I had a lot of background going into ARKit. ARKit provides **MeshAnchors** which store the mesh data (vertices, triangleIndices, normals) obtained at runtime for your use. you can reconstruct a visual mesh by iterating over these MeshAnchors and creating a new ModelEntity based on the original mesh. Initially applying the matrix shader to these meshes: 
-<iframe width="560" height="315" src="https://youtu.be/Zn_qGsGb-ng" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Zn_qGsGb-ng?si=cot1hGvqXMf5Dav2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 I will continue working on the matrix shader to improve its look in 3D. The shader was written for 2D UV Mappings, so understanding the relationship spatial mesh reconstructions have with the texture mapping will be important going forward.
