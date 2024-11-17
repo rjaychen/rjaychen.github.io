@@ -4,12 +4,14 @@ layout: post
 title: "\"The Matrix\" Shader in visionOS"
 subtitle: Metal Shading using RealityKit and CompositorServices
 description: How to work with metal shaders to give more control over your materials in RealityKit
-image:
+image: https://res.cloudinary.com/dle8qrl6x/image/upload/f_auto,q_auto/ucriyewqjslzrwhfyvrk
 optimized_image:
 category: cg
 tags:
  - blog
  - cg
+ - swift
+ - visionos
 author: rjaychen
 paginate: false
 ---

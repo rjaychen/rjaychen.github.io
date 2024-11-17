@@ -13,7 +13,11 @@ permalink: /about/
 
 I'm a student at Duke University studying ECE/CS and Japanese. My interests include Computer Graphics, Mixed Reality, and how technology can be integrated with art. I'm also always interested in understanding how technology can be applied to health to improve the human experience.
 
+My research experience includes Signal Processing research with EEG signals, AR Development in Unity, and Swift development in visionOS. I have recently been working mainly with Swift and Objective-C. I have experience with Unity, C#, Python, C++, among other languages, but am always dedicated to learning new tech stacks. One of my aspirations is to make a full-game and movie.
+
 I love drawing, music, playing piano, running, and watching TV shows. Feel free to reach out to me about anything!
+
+Check out some of my projects at my [github](https://github.com/rjaychen).
 
 Email: **ryan.j.chen@duke.edu**
 
@@ -21,11 +25,12 @@ Email: **ryan.j.chen@duke.edu**
 
 | Degree | School | Time |
 | ------ | ------ | ---- |
-| B.S. in Engineering | Duke University | 2021 - 2025 |
+| Dual B.S. in Electrical & Computer Engineering / Computer Science | Duke University | 2021 - 2025 |
 
 ## Experience
 
 | Position | Employer | Time |
 | -------- | -------- | ---- |
-| Undergraduate Researcher | [I^3T Lab](https://maria.gorlatova.com/current-research/) | Summer 2024
-| Software Quality Engineering Intern | Align Technology | Summer 2023 |
+| XR Undergraduate Researcher | [I^3T Lab](https://maria.gorlatova.com/current-research/) | September 2023 - May 2025 |
+| Software Quality Engineering Intern | [Align Technology](https://www.aligntech.com/) | Summer 2023 |
+| BME Undergraduate Researcher | [Big Ideas Lab](https://dunn.pratt.duke.edu/) | September 2022 - May 2023 |
