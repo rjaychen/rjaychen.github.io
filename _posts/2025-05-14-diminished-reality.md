@@ -1,9 +1,9 @@
 ---
 date: 2026-02-18 10:00:00
 layout: post
-title: "Towards Diminished Reality: Exploration on the Apple Vision Pro, Evaluation with VLMs"
+title: "Diminishing Reality on Apple Vision Pro"
 subtitle:
-description: Independent Research Project I did for my Graduation with Distinction
+description: Undergraduate Research investigating the ways in which we can visually and programatically replace our environment 
 image: https://res.cloudinary.com/dle8qrl6x/image/upload/f_auto,q_auto/mouse-dr_jpgiuw.png
 optimized_image: https://res.cloudinary.com/dle8qrl6x/image/upload/t_optimized-240p,f_auto,q_auto/mouse-dr_jpgiuw.png
 category: cg, xr, ml, vlm
