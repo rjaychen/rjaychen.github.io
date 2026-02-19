@@ -3,8 +3,8 @@ layout: author
 photo: /assets/img/uploads/penguin.png
 name: rjaychen
 display_name: Ryan J. Chen
-position: Developer
-bio: Aspiring code wizard learning more about the world.
+position: Softwarer
+bio: Wearer of Softs.
 github_username: rjaychen
 facebook_username: 
 twitter_username: 

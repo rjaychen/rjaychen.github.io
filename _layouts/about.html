@@ -1,0 +1,18 @@
+---
+layout: default
+---
+
+<div class="cv-page">
+  {% include cv-header.html %}
+
+  <section class="cv-bio">
+    <div class="post-content fullwidth">
+      {{ content }}
+    </div>
+  </section>
+
+  {% include cv-languages.html %}
+  {% include cv-skills.html %}
+
+  {% include cv-timeline.html %}
+</div>

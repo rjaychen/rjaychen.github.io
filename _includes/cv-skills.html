@@ -1,0 +1,10 @@
+{% if page.skills and page.skills.size > 0 %}
+<section class="cv-skills">
+  <h2 class="cv-skills-title">Skills & Technologies</h2>
+  <div class="cv-skills-list">
+    {% for skill in page.skills %}
+      <span class="cv-skill-pill">{{ skill }}</span>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

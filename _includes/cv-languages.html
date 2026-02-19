@@ -1,0 +1,18 @@
+{% if page.languages and page.languages.size > 0 %}
+<section class="cv-languages">
+  <h2 class="cv-languages-title">Languages I speak or am learning</h2>
+  <p class="cv-languages-subtitle">Talk to me in any of these — or teach me yours!</p>
+  <div class="cv-languages-grid">
+    {% for lang in page.languages %}
+    <div class="cv-language-card">
+      {% if lang.script and lang.script != "" %}
+        <span class="cv-language-script">{{ lang.script }}</span>
+        <span class="cv-language-name">{{ lang.name }}</span>
+      {% else %}
+        <span class="cv-language-script cv-language-script-only">{{ lang.name }}</span>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

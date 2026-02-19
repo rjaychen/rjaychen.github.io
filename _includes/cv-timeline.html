@@ -1,0 +1,41 @@
+<div class="cv-timeline">
+  {% if page.education and page.education.size > 0 %}
+  <section class="cv-timeline-section">
+    <h2 class="cv-timeline-title">Education</h2>
+    <div class="cv-timeline-items">
+      {% assign sorted_education = page.education | sort: "start_date" %}
+      {% for item in sorted_education %}
+      <div class="cv-timeline-item">
+        <span class="cv-timeline-date">{{ item.period }}</span>
+        <div class="cv-timeline-content">
+          <h3 class="cv-timeline-role">{{ item.degree }}</h3>
+          <p class="cv-timeline-employer">{{ item.school }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if page.experience and page.experience.size > 0 %}
+  <section class="cv-timeline-section">
+    <h2 class="cv-timeline-title">Experience</h2>
+    <div class="cv-timeline-items">
+      {% assign sorted_experience = page.experience | sort: "start_date" | reverse %}
+      {% for item in sorted_experience %}
+      <div class="cv-timeline-item">
+        <span class="cv-timeline-date">{{ item.period }}</span>
+        <div class="cv-timeline-content">
+          <h3 class="cv-timeline-role">{{ item.role }}</h3>
+          {% if item.url %}
+            <a href="{{ item.url }}" target="_blank" rel="noopener" class="cv-timeline-employer cv-timeline-link">{{ item.employer }}</a>
+          {% else %}
+            <p class="cv-timeline-employer">{{ item.employer }}</p>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</div>

@@ -30,6 +30,11 @@
           <svg><use xlink:href="#icon-linkedin"></use></svg>
         </a>
       {% endif %}
+      {% if site.google_scholar_id %}
+        <a href="https://scholar.google.com/citations?user={{ site.google_scholar_id }}" title="Google Scholar">
+          <svg><use xlink:href="#icon-google-scholar"></use></svg>
+        </a>
+      {% endif %}
     </p>
 
     {% include links.html %}
@@ -57,6 +62,9 @@
 {% endif %}
 {% if site.linkedin_username %}
     {% assign social_urls = social_urls | append: '"https://www.linkedin.com/in/' | append: site.linkedin_username | append: '",' %}
+{% endif %}
+{% if site.google_scholar_id %}
+    {% assign social_urls = social_urls | append: '"https://scholar.google.com/citations?user=' | append: site.google_scholar_id | append: '",' %}
 {% endif %}
 
 <script type="application/ld+json">

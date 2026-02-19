@@ -1,0 +1,353 @@
+// CV Page - Netflix-inspired layout
+.cv-page {
+  padding-top: rem(80px);
+  padding-bottom: rem(60px);
+  min-height: 100vh;
+
+  @include media(">=sm") {
+    padding-top: rem(100px);
+    padding-bottom: rem(80px);
+  }
+}
+
+// Profile header - compact hero strip
+.cv-header {
+  background: linear-gradient(135deg, $primaryDark 0%, darken($primaryDark, 3%) 100%);
+  padding: rem(40px) rem(20px);
+  margin-bottom: rem(40px);
+  border-bottom: 2px solid rgba($themeColor, 0.3);
+
+  @include media(">=sm") {
+    padding: rem(50px) rem(40px);
+    margin-bottom: rem(50px);
+  }
+}
+
+.cv-header-inner {
+  @include center(rem(900px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(24px);
+  margin: 0 auto;
+  padding: 0 rem(20px);
+
+  @include media(">=sm") {
+    flex-direction: row;
+    align-items: center;
+    gap: rem(32px);
+    padding: 0;
+  }
+}
+
+.cv-profile-image {
+  width: rem(120px);
+  height: rem(120px);
+  object-fit: cover;
+  border: 3px solid rgba($themeColor, 0.5);
+  flex-shrink: 0;
+}
+
+.cv-header-text {
+  text-align: center;
+
+  @include media(">=sm") {
+    text-align: left;
+  }
+}
+
+.cv-name {
+  @include mainFont(700);
+  font-size: rem(28px);
+  color: $accentDark;
+  margin: 0 0 rem(8px);
+  letter-spacing: 0.02em;
+
+  @include media(">=sm") {
+    font-size: rem(32px);
+  }
+}
+
+.cv-tagline {
+  @include mainFont(400);
+  font-size: rem(15px);
+  color: rgba($accentDark, 0.85);
+  margin: 0 0 rem(16px);
+  line-height: 1.5;
+
+  @include media(">=sm") {
+    font-size: rem(16px);
+  }
+}
+
+.cv-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: rem(16px) rem(24px);
+
+  @include media(">=sm") {
+    justify-content: flex-start;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: rem(6px);
+    color: $themeColor;
+    text-decoration: none;
+    @include mainFont(500);
+    font-size: rem(14px);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: lighten($themeColor, 15%);
+    }
+
+    svg {
+      width: rem(18px);
+      height: rem(18px);
+      fill: currentColor;
+    }
+  }
+}
+
+// Bio section
+.cv-bio {
+  @include center(rem(800px));
+  margin: 0 auto rem(50px);
+  padding: 0 rem(20px);
+
+  .post-content {
+    padding: 0;
+  }
+
+  p, ul, ol {
+    @include mainFont(400);
+    font-size: rem(17px);
+    line-height: rem(30px);
+    color: $texts;
+    margin: rem(16px) 0;
+
+    @include media(">=sm") {
+      font-size: rem(18px);
+      line-height: rem(32px);
+    }
+  }
+
+  a {
+    color: $themeColor;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  h1, h2, h3 {
+    @include mainFont(700);
+    color: $primaryDark;
+    margin: rem(24px) 0 rem(12px);
+  }
+}
+
+// Languages section - creative "passport stamps" style
+.cv-languages {
+  @include center(rem(900px));
+  margin: 0 auto rem(50px);
+  padding: 0 rem(20px);
+}
+
+.cv-languages-title {
+  @include mainFont(700);
+  font-size: rem(20px);
+  color: $primaryDark;
+  margin: 0 0 rem(8px);
+  padding-bottom: rem(8px);
+  border-bottom: 2px solid $themeColor;
+}
+
+.cv-languages-subtitle {
+  @include mainFont(400);
+  font-size: rem(14px);
+  color: darken($lightGray, 25%);
+  margin: 0 0 rem(24px);
+  font-style: italic;
+}
+
+.cv-languages-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(12px);
+}
+
+.cv-language-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: rem(90px);
+  padding: rem(12px) rem(16px);
+  background: linear-gradient(135deg, rgba($themeColor, 0.08) 0%, rgba($themeColor, 0.02) 100%);
+  border: 1px solid rgba($themeColor, 0.25);
+  border-radius: rem(8px);
+  transition: all 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px) scale(1.02);
+    border-color: rgba($themeColor, 0.5);
+    box-shadow: 0 rem(4px) rem(12px) rgba($themeColor, 0.15);
+  }
+}
+
+.cv-language-script {
+  @include mainFont(700);
+  font-size: rem(18px);
+  color: $themeColor;
+  line-height: 1.3;
+  margin-bottom: rem(4px);
+
+  &.cv-language-script-only {
+    margin-bottom: 0;
+    font-size: rem(16px);
+  }
+}
+
+.cv-language-name {
+  @include mainFont(400);
+  font-size: rem(12px);
+  color: $texts;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+// Skills section
+.cv-skills {
+  @include center(rem(900px));
+  margin: 0 auto rem(50px);
+  padding: 0 rem(20px);
+}
+
+.cv-skills-title {
+  @include mainFont(700);
+  font-size: rem(20px);
+  color: $primaryDark;
+  margin: 0 0 rem(20px);
+  padding-bottom: rem(8px);
+  border-bottom: 2px solid $themeColor;
+}
+
+.cv-skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(10px);
+}
+
+.cv-skill-pill {
+  display: inline-block;
+  padding: rem(8px) rem(16px);
+  background: rgba($themeColor, 0.1);
+  border: 1px solid rgba($themeColor, 0.4);
+  border-radius: rem(20px);
+  @include mainFont(500);
+  font-size: rem(14px);
+  color: darken($themeColor, 5%);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba($themeColor, 0.2);
+    border-color: $themeColor;
+    transform: translateY(-1px);
+  }
+}
+
+// Timeline section
+.cv-timeline {
+  @include center(rem(800px));
+  margin: 0 auto;
+  padding: 0 rem(20px);
+}
+
+.cv-timeline-section {
+  margin-bottom: rem(40px);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.cv-timeline-title {
+  @include mainFont(700);
+  font-size: rem(22px);
+  color: $primaryDark;
+  margin: 0 0 rem(24px);
+  padding-bottom: rem(8px);
+  border-bottom: 2px solid $themeColor;
+}
+
+.cv-timeline-items {
+  position: relative;
+  padding-left: rem(28px);
+  border-left: 2px solid rgba($themeColor, 0.4);
+  margin-left: 0;
+}
+
+.cv-timeline-item {
+  position: relative;
+  margin-bottom: rem(28px);
+  padding-left: rem(24px);
+  min-height: rem(40px);
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: rem(-29px);
+    top: 58%;
+    transform: translate(-50%, -50%);
+    width: rem(12px);
+    height: rem(12px);
+    background: $themeColor;
+    border-radius: 50%;
+    border: 2px solid $primaryDark;
+    box-sizing: border-box;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.cv-timeline-date {
+  display: inline-block;
+  @include mainFont(600);
+  font-size: rem(13px);
+  color: $themeColor;
+  background: rgba($themeColor, 0.12);
+  padding: rem(4px) rem(10px);
+  border-radius: rem(4px);
+  margin-bottom: rem(8px);
+}
+
+.cv-timeline-role {
+  @include mainFont(700);
+  font-size: rem(17px);
+  color: $primaryDark;
+  margin: 0 0 rem(4px);
+}
+
+.cv-timeline-employer,
+.cv-timeline-link {
+  @include mainFont(400);
+  font-size: rem(15px);
+  color: $texts;
+  margin: 0;
+}
+
+.cv-timeline-link {
+  color: $themeColor;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

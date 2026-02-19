@@ -120,6 +120,9 @@ layout: main
 {% if site.linkedin_username %}
     {% assign social_urls = social_urls | append: '"https://www.linkedin.com/in/' | append: site.linkedin_username | append: '",' %}
 {% endif %}
+{% if site.google_scholar_id %}
+    {% assign social_urls = social_urls | append: '"https://scholar.google.com/citations?hl=en&user=' | append: site.google_scholar_id | append: '",' %}
+{% endif %}
 
 <script type="application/ld+json">
 {

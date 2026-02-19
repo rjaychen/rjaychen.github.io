@@ -1,0 +1,37 @@
+<header class="cv-header">
+  <div class="cv-header-inner">
+    <img class="cv-profile-image img-rounded" src="{{ page.profile_image | default: '/assets/img/uploads/penguin.png' }}" alt="{{ page.cv_name | default: page.title }}" width="120" height="120">
+    <div class="cv-header-text">
+      <h1 class="cv-name">{{ page.cv_name | default: page.title }}</h1>
+      {% if page.tagline %}
+        <p class="cv-tagline">{{ page.tagline }}</p>
+      {% endif %}
+      <div class="cv-links">
+        {% if site.email %}
+          <a href="mailto:{{ site.email }}" title="Email">
+            <svg><use xlink:href="#icon-mail"></use></svg>
+            <span>Email</span>
+          </a>
+        {% endif %}
+        {% if site.github_username %}
+          <a href="https://github.com/{{ site.github_username }}" title="GitHub">
+            <svg><use xlink:href="#icon-github"></use></svg>
+            <span>GitHub</span>
+          </a>
+        {% endif %}
+        {% if site.linkedin_username %}
+          <a href="https://www.linkedin.com/in/{{ site.linkedin_username }}" title="LinkedIn">
+            <svg><use xlink:href="#icon-linkedin"></use></svg>
+            <span>LinkedIn</span>
+          </a>
+        {% endif %}
+        {% if site.google_scholar_id %}
+          <a href="https://scholar.google.com/citations?user={{ site.google_scholar_id }}" title="Google Scholar">
+            <svg><use xlink:href="#icon-google-scholar"></use></svg>
+            <span>Scholar</span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</header>

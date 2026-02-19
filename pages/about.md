@@ -1,36 +1,83 @@
 ---
-layout: page
+layout: about
 menu: false
 date: '2020-02-27 01:53:59'
 title: About
 description: About Me!
 permalink: /about/
+
+# CV structured data
+cv_name: Ryan J. Chen
+profile_image: /assets/img/uploads/penguin.png
+tagline: ECE/CS & Japanese @ Duke · CG, XR, Mixed Reality
+
+education:
+  - degree: "Dual B.S. in Electrical & Computer Engineering / Computer Science"
+    school: "Duke University"
+    period: "2021 - 2025"
+    start_date: "2021-09"
+    end_date: "2025-05"
+
+experience:
+  - role: "3D Software Development Engineer in Test"
+    employer: "Align Technology"
+    url: "https://www.aligntech.com/"
+    period: "July 2025 - Present"
+    start_date: "2025-07"
+    end_date: "9999-12"
+  - role: "XR Undergraduate Researcher"
+    employer: "I³T Lab"
+    url: "https://maria.gorlatova.com/current-research/"
+    period: "September 2023 - May 2025"
+    start_date: "2023-09"
+    end_date: "2025-05"
+  - role: "Software Quality Engineering Intern"
+    employer: "Align Technology"
+    url: "https://www.aligntech.com/"
+    period: "Summer 2023"
+    start_date: "2023-06"
+    end_date: "2023-08"
+  - role: "BME Undergraduate Researcher"
+    employer: "Big Ideas Lab"
+    url: "https://dunn.pratt.duke.edu/"
+    period: "September 2022 - May 2023"
+    start_date: "2022-09"
+    end_date: "2023-05"
+
+skills:
+  - Swift
+  - Unity
+  - C#
+  - Python
+  - C++
+  - RealityKit
+  - visionOS
+  - Testing
+  - Geometry
+
+languages:
+  - name: English
+    script: ""
+  - name: Chinese
+    script: "中文"
+  - name: Japanese
+    script: "日本語"
+  - name: German
+    script: "Deutsch"
+  - name: Spanish
+    script: "Español"
+  - name: Portuguese
+    script: "Português"
+  - name: Turkish
+    script: "Türkçe"
+  - name: Arabic
+    script: "العربية"
 ---
 
-<img class="img-rounded" src="/assets/img/uploads/penguin.png" alt="Ryan J. Chen" width="200">
+I'm a software and computer engineer, currently at Align Technology. My interests include Graphics, Vision, and Mixed Reality. I'm further interested in understanding how technology can be applied to health to improve the human experience.
 
-# About
+My background lies in BME, EE, and CS, where I have done signal Processing research with EEG signals, AR Development in Unity, and Swift development in visionOS. One of my aspirations is to make a full-game, full movie, and full animation series.
 
-I'm a student at Duke University studying ECE/CS and Japanese. My interests include Computer Graphics, Mixed Reality, and how technology can be integrated with art. I'm also always interested in understanding how technology can be applied to health to improve the human experience.
+I also love learning languages, and I want to learn all the languages of the world. If you'd like to talk to me, I would love to learn your language as well. Perhaps you can guess which ones I am better or worse at from the languages below.
 
-My research experience includes Signal Processing research with EEG signals, AR Development in Unity, and Swift development in visionOS. I have recently been working mainly with Swift and Objective-C. I have experience with Unity, C#, Python, C++, among other languages, but am always dedicated to learning new tech stacks. One of my aspirations is to make a full-game and movie.
-
-I love drawing, music, playing piano, running, and watching TV shows. Feel free to reach out to me about anything!
-
-Check out some of my projects at my [github](https://github.com/rjaychen).
-
-Email: **ryan.j.chen@duke.edu**
-
-## Education
-
-| Degree | School | Time |
-| ------ | ------ | ---- |
-| Dual B.S. in Electrical & Computer Engineering / Computer Science | Duke University | 2021 - 2025 |
-
-## Experience
-
-| Position | Employer | Time |
-| -------- | -------- | ---- |
-| XR Undergraduate Researcher | [I^3T Lab](https://maria.gorlatova.com/current-research/) | September 2023 - May 2025 |
-| Software Quality Engineering Intern | [Align Technology](https://www.aligntech.com/) | Summer 2023 |
-| BME Undergraduate Researcher | [Big Ideas Lab](https://dunn.pratt.duke.edu/) | September 2022 - May 2023 |
+Aside from the above, I also enjoy drawing, music, playing piano, running, hiking, and watching TV shows. Feel free to reach out to me about anything!
