@@ -4,15 +4,17 @@ layout: post
 title: "Towards Diminished Reality: Exploration on the Apple Vision Pro, Evaluation with VLMs"
 subtitle:
 description: Independent Research Project I did for my Graduation with Distinction
-image: https://placehold.it/800x400
-optimized_image: https://placehold.it/400x200
-category: cg, xr
+image: https://res.cloudinary.com/dle8qrl6x/image/upload/f_auto,q_auto/mouse-dr_jpgiuw.png
+optimized_image: https://res.cloudinary.com/dle8qrl6x/image/upload/t_optimized-240p,f_auto,q_auto/mouse-dr_jpgiuw.png
+category: cg, xr, ml, vlm
 tags:
  - blog
- - cg
+ - research
  - swift
  - realitykit
  - xr
+ - diminished_reality
+ - metal
 author: rjaychen
 paginate: false
 math: true
@@ -55,6 +57,8 @@ I was interested in how we could mitigate phone addiction, distraction, and impr
 ![Diminished Phone On Window](/assets/img/ug_thesis/phone-1.PNG)
 ![Diminished Phone On Window 2](/assets/img/ug_thesis/phone-4.PNG)
 In the background you can see the beautiful Duke scenery and how the LaMa model tries to compensate and guess those spaces with deep learning.
+
+As a side note, I also evaluated the immersiveness of my diminished scenes with VLMs. This work is similar to the work I did for [this article](https://ieeexplore.ieee.org/abstract/document/11207679) on using VLMs in mixed reality spaces.
 
 # Limitations and Future
 - My system has strong reliance on pre-scanned 3D models, which points to future research into real-time object learning and spontaneous photogrammetry to improve usability in uncontrolled environments. 
