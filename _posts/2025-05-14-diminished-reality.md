@@ -1,7 +1,7 @@
 ---
 date: 2026-02-18 10:00:00
 layout: post
-title: "Diminishing Reality on Apple Vision Pro"
+title: "Replacing Reality on the Vision Pro"
 subtitle:
 description: Undergraduate Research investigating the ways in which we can visually and programatically replace our environment 
 image: https://res.cloudinary.com/dle8qrl6x/image/upload/f_auto,q_auto/mouse-dr_jpgiuw.png
