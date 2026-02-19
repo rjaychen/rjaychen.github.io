@@ -6,11 +6,15 @@ subtitle: Metal Shading using RealityKit and CompositorServices
 description: How to work with metal shaders to give more control over your materials in RealityKit
 image: https://res.cloudinary.com/dle8qrl6x/image/upload/f_auto,q_auto/matrix-hands
 optimized_image: https://res.cloudinary.com/dle8qrl6x/image/upload/t_optimized-240p,f_auto,q_auto/matrix-hands
+category: xr
 tags:
  - blog
  - cg
  - swift
  - visionos
+ - swift
+ - realitykit
+ - xr
 author: rjaychen
 paginate: false
 ---

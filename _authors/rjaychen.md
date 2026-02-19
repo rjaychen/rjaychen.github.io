@@ -10,6 +10,7 @@ facebook_username:
 twitter_username: 
 instagram_username: 
 linkedin_username: ryanjaychen
-medium_username: 
+medium_username:
+google_scholar_id: vrnGdhwAAAAJ 
 ---
 

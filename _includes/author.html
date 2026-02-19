@@ -43,6 +43,11 @@
             <svg><use xlink:href="#icon-linkedin"></use></svg>
           </a>
         {% endif %}
+        {% if author.google_scholar_id %}
+          <a href="https://scholar.google.com/citations?user={{ author.google_scholar_id }}" title="Google Scholar">
+            <svg><use xlink:href="#icon-google-scholar"></use></svg>
+          </a>
+        {% endif %}
       </p>
     </div>
   </section>
@@ -65,6 +70,9 @@
   {% endif %}
   {% if author.linkedin_username %}
       {% assign author_urls = author_urls | append: '"https://www.linkedin.com/in/' | append: author.linkedin_username | append: '",' %}
+  {% endif %}
+  {% if author.google_scholar_id %}
+      {% assign author_urls = author_urls | append: '"https://scholar.google.com/citations?user=' | append: author.google_scholar_id | append: '",' %}
   {% endif %}
 
   <script type="application/ld+json">

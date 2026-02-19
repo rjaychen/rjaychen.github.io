@@ -6,7 +6,7 @@ subtitle:
 description: Undergraduate Research investigating the ways in which we can visually and programatically replace our environment 
 image: https://res.cloudinary.com/dle8qrl6x/image/upload/f_auto,q_auto/mouse-dr_jpgiuw.png
 optimized_image: https://res.cloudinary.com/dle8qrl6x/image/upload/t_optimized-240p,f_auto,q_auto/mouse-dr_jpgiuw.png
-category: cg, xr, ml, vlm
+category: xr
 tags:
  - blog
  - research
@@ -15,6 +15,7 @@ tags:
  - xr
  - diminished_reality
  - metal
+ - visionos
 author: rjaychen
 paginate: false
 math: true
