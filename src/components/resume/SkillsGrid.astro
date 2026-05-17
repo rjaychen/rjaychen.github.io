@@ -1,0 +1,134 @@
+---
+import type { SkillDef } from '../../data/resume';
+import SkillIcon from './SkillIcon.astro';
+
+interface Props {
+  technicalSkills: SkillDef[];
+  softSkills: string[];
+  languages: string[];
+  headingTechnical?: string;
+  headingSoft?: string;
+  headingLanguages?: string;
+}
+
+const {
+  technicalSkills,
+  softSkills,
+  languages,
+  headingTechnical = 'Tools I\'ve Used',
+  headingSoft = 'Competencies',
+  headingLanguages = 'Languages I\'m Learning',
+} = Astro.props;
+---
+
+<section class="resume-section grids">
+  <div class="grid">
+    <h2>{headingTechnical}</h2>
+    <ul class="chips chips--icons">
+      {technicalSkills.map((skill) => (
+        <li>
+          <SkillIcon id={skill.id} size={16} />
+          <span>{skill.label}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  {softSkills.length > 0 && (
+    <div class="grid">
+      <h2>{headingSoft}</h2>
+      <ul class="chips">
+        {softSkills.map((skill) => <li>{skill}</li>)}
+      </ul>
+    </div>
+  )}
+
+  <div class="grid">
+    <h2>{headingLanguages}</h2>
+    <ul class="chips columns">
+      {languages.map((language) => <li>{language}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .resume-section.grids {
+    margin-top: var(--space-lg);
+    display: grid;
+    gap: var(--space-lg);
+  }
+
+  .grid {
+    padding: clamp(20px, 3vw, 28px);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-panel-border);
+    background: var(--color-bg-muted);
+    box-shadow:
+      inset 0 1px rgba(255, 255, 255, 0.05),
+      0 34px 80px rgba(0, 0, 0, 0.12);
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .chips.columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .chips li {
+    padding: 0.4125rem 0.935rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 0.915rem;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .chips li:hover {
+    border-color: var(--color-accent-soft);
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  /* Icon chips — flex row with icon + label */
+  .chips--icons li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.35rem 0.8rem 0.35rem 0.55rem;
+  }
+
+  .chips--icons :global(.skill-icon) {
+    filter: invert(1) brightness(0.85);
+  }
+
+  html.view-readable-root .chips--icons :global(.skill-icon) {
+    filter: none;
+  }
+
+  html.view-readable-root .chips li {
+    border-color: rgba(29, 29, 31, 0.1);
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  html.view-readable-root .chips li:hover {
+    border-color: var(--color-accent);
+    background: rgba(0, 0, 0, 0.07);
+  }
+
+  html.view-readable-root .grid {
+    box-shadow:
+      inset 0 1px rgba(255, 255, 255, 0.8),
+      0 34px 80px rgba(0, 0, 0, 0.04);
+    background: #ffffffcc;
+    border-color: rgba(29, 29, 31, 0.1);
+  }
+</style>

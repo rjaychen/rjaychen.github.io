@@ -1,0 +1,108 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { getCollection } from 'astro:content';
+
+function dateSortKey(post: { data: { date: string } }): number {
+  return Date.parse(post.data.date);
+}
+
+const posts = (await getCollection('blog')).filter((p) => !p.data.draft);
+posts.sort((a, b) => dateSortKey(b) - dateSortKey(a));
+
+const title = 'Blog · Ryan J. Chen';
+
+const prefix = import.meta.env.BASE_URL;
+---
+
+<SiteLayout title={title} description="Writing on graphics, XR, and engineering.">
+  <div class="blog-index">
+    <h1>Blog</h1>
+    <p class="lede">Technical notes and occasional longer-form pieces.</p>
+    <div class="card-grid card-grid--2">
+      {
+        posts.map((post) => {
+          const d = new Date(post.data.date);
+          return (
+            <a class="blog-card" href={`${prefix}blog/${post.id}/`}>
+              <h2>{post.data.title}</h2>
+              <p class="meta">
+                {d.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+                {post.data.description ? ` · ${post.data.description}` : ''}
+              </p>
+            </a>
+          );
+        })
+      }
+    </div>
+  </div>
+</SiteLayout>
+
+<style>
+  .blog-index {
+    max-width: var(--layout-max);
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg);
+  }
+
+  .blog-index h1 {
+    margin-bottom: var(--space-sm);
+  }
+
+  .lede {
+    margin: 0 0 var(--space-xl);
+    color: var(--color-text-muted);
+    max-width: 50ch;
+  }
+
+  html.view-readable-root .lede {
+    color: var(--color-text-muted);
+  }
+
+  .card-grid {
+    display: grid;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 640px) {
+    .card-grid--2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .blog-card {
+    display: block;
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-panel-border);
+    background: var(--color-panel);
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--shadow-soft);
+    transition: border-color 0.2s ease;
+  }
+
+  html.view-readable-root .blog-card {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+  }
+
+  .blog-card:hover {
+    border-color: var(--color-accent-soft);
+  }
+
+  .blog-card h2 {
+    margin: 0 0 var(--space-sm);
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+  }
+
+  .blog-card .meta {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+</style>

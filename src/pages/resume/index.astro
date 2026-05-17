@@ -1,0 +1,104 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import ResumeSections from '../../components/resume/ResumeSections.astro';
+import '../../styles/print-resume.css';
+
+import {
+  identity,
+  education,
+  experience,
+  technicalSkills,
+  softSkills,
+  languagesSpoken,
+  interests,
+} from '../../data/resume';
+import SocialLinks from '../../components/SocialLinks.astro';
+
+const title = `${identity.name} · Resume`;
+---
+
+<SiteLayout title={title} htmlClass="view-readable-root" bodyClass="page-resume">
+  <div class="u-container readable-flow">
+    <header class="resume-hero page-hero">
+      <p class="eyebrow">Credentials</p>
+      <h1>{identity.name}</h1>
+      <p class="lede">{identity.title}</p>
+      <SocialLinks
+        github={identity.github}
+        linkedIn={identity.linkedIn}
+        googleScholar={identity.googleScholar}
+        class="resume-social no-print"
+      />
+      <p class="print-hint no-print muted">
+        Print (Ctrl+P) uses a simplified layout — disable headers/footers in the print dialog for best results.
+      </p>
+    </header>
+
+    <ResumeSections
+      summary={identity.summary}
+      education={education}
+      experience={experience}
+      technicalSkills={technicalSkills}
+      softSkills={softSkills}
+      languagesSpoken={languagesSpoken}
+      interests={interests}
+    />
+  </div>
+</SiteLayout>
+
+<style is:global>
+  .readable-flow {
+    position: relative;
+    z-index: 2;
+    padding-block: clamp(48px, 8vw, 96px) calc(var(--space-xl));
+  }
+
+  .page-resume.readable-surface {
+    background: var(--color-bg-deep);
+    color-scheme: light dark;
+    color-scheme: light;
+  }
+
+  .resume-hero h1 {
+    margin: var(--space-sm) 0;
+    letter-spacing: -0.04em;
+    font-size: clamp(2.85rem, 6vw, 4.5rem);
+  }
+
+  .resume-hero .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.7825rem;
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .resume-hero .lede {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    max-width: 46ch;
+  }
+
+  .print-hint {
+    margin-top: var(--space-lg);
+    max-width: 46ch;
+  }
+
+  html.view-readable-root .page-resume {
+    background: #fbfbfd;
+    color-scheme: light;
+  }
+
+  html.view-readable-root.page-resume,
+  html.view-readable-root .page-resume {
+    border: none;
+  }
+
+  body.page-resume {
+    transition: none;
+  }
+
+  .resume-social {
+    margin-top: var(--space-sm);
+  }
+</style>

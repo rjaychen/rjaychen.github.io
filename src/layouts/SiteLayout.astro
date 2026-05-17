@@ -1,0 +1,184 @@
+---
+import '../styles/global.css';
+import { identity } from '../data/resume';
+import { sitePath } from '../utils/paths';
+import SocialLinks from '../components/SocialLinks.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  htmlClass?: string;
+  bodyClass?: string;
+}
+
+const { title = identity.name, description = identity.summary, bodyClass = '', htmlClass } = Astro.props;
+
+const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.url;
+---
+
+<!DOCTYPE html>
+<html lang="en" class:list={['theme-root', htmlClass]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL.toString()} />
+    <slot name="head" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL.toString()} />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <meta name="theme-color" content="#0a0a0c" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)" />
+    <script is:inline>
+      (function () {
+        try {
+          var k = 'portfolio-view-mode';
+          var s = localStorage.getItem(k);
+          var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+          var mode =
+            s === 'interactive' || s === 'readable' ? s : mq.matches ? 'readable' : 'interactive';
+          if (mode === 'readable') {
+            document.documentElement.classList.add('view-readable-root');
+          }
+        } catch (e) {}
+        // Restore accent color before first paint to avoid flash of default blue
+        try {
+          var accent = localStorage.getItem('portfolio-accent-color');
+          if (accent && /^#[0-9a-f]{6}$/i.test(accent)) {
+            document.documentElement.style.setProperty('--color-accent', accent);
+            var m = accent.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
+            if (m) {
+              document.documentElement.style.setProperty(
+                '--color-accent-soft',
+                'rgba(' + parseInt(m[1], 16) + ',' + parseInt(m[2], 16) + ',' + parseInt(m[3], 16) + ',0.35)'
+              );
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class={`${bodyClass}`.trim()}>
+    <a class="visually-hidden" href="#main">Skip to content</a>
+    <header class="site-nav no-print">
+      <div class="u-container site-nav-inner">
+        <a class="mark" href={sitePath()}>{identity.name}</a>
+        <nav aria-label="Primary">
+          <a href={sitePath()} aria-current={Astro.url.pathname === sitePath() || Astro.url.pathname === '/' ? 'page' : undefined}>Home</a>
+          <a
+            href={sitePath('blog')}
+            aria-current={Astro.url.pathname.startsWith(sitePath('blog')) ? 'page' : undefined}
+            >Blog</a
+          >
+          <a
+            href={sitePath('resume')}
+            aria-current={Astro.url.pathname.startsWith(sitePath('resume')) ? 'page' : undefined}
+            >Resume</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer no-print">
+      <div class="u-container site-footer-inner">
+        <span class="footer-tagline">{identity.tagline}</span>
+        <SocialLinks github={identity.github} linkedIn={identity.linkedIn} googleScholar={identity.googleScholar} />
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--color-panel-border);
+    background: rgba(10, 10, 14, 0.65);
+    -webkit-backdrop-filter: saturate(140%) blur(18px);
+    backdrop-filter: saturate(140%) blur(18px);
+  }
+
+  @supports not (backdrop-filter: blur(1px)) {
+    .site-nav {
+      background: var(--color-bg-deep);
+    }
+  }
+
+  .site-nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    min-height: 64px;
+  }
+
+  .site-nav-inner nav {
+    display: flex;
+    gap: var(--space-md);
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .site-nav a {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  .site-nav nav a:hover,
+  .site-nav nav a:focus-visible {
+    color: var(--color-text-primary);
+  }
+
+  .mark {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-size: 1rem;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .site-footer {
+    margin-top: var(--space-xl);
+    padding: var(--space-lg) 0 calc(var(--space-lg) + 12px);
+    border-top: 1px solid var(--color-panel-border);
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+  }
+
+  .site-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-tagline {
+    max-width: 48rem;
+    line-height: 1.5;
+  }
+
+  html.view-readable-root .site-nav {
+    border-bottom-color: rgba(17, 17, 20, 0.08);
+    background: rgba(245, 245, 247, 0.85);
+  }
+</style>
