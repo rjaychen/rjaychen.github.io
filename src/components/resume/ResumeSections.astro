@@ -1,0 +1,179 @@
+---
+import ExperienceTimeline from './ExperienceTimeline.astro';
+import SkillsGrid from './SkillsGrid.astro';
+
+import type { EducationEntry, TimelineEntry, SkillDef } from '../../data/resume';
+
+interface Props {
+  summary: string;
+  education: EducationEntry[];
+  experience: TimelineEntry[];
+  technicalSkills: SkillDef[];
+  softSkills: string[];
+  languagesSpoken: string[];
+  interests: string;
+  compact?: boolean;
+}
+
+const { summary, education, experience, technicalSkills, softSkills, languagesSpoken, interests, compact = false } = Astro.props;
+
+const eduHeading = compact ? 'Studies' : 'Education';
+const xpHeading = compact ? 'Selected roles' : 'Experience';
+---
+
+<section class="resume-intro">
+  <slot name="eyebrow" />
+  <p class="resume-summary">{summary}</p>
+</section>
+
+<section class="resume-section edu">
+  <h2>{eduHeading}</h2>
+  <div class="edu-grid">
+    {
+      education.map((entry) => (
+        <article class="edu-card">
+          <div class="edu-card__main">
+            <h3>{entry.degree}</h3>
+            <p class="edu-institution">{entry.institution}</p>
+            <small class="edu-range">{entry.range}</small>
+          </div>
+          {entry.logoSrc && (
+            <div class="edu-card__brand">
+              <span class="org-logo-frame edu-org-logo-frame">
+                <img
+                  class="org-logo-img"
+                  src={entry.logoSrc}
+                  alt={entry.logoAlt ?? ''}
+                  width="48"
+                  height="48"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </span>
+            </div>
+          )}
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<ExperienceTimeline heading={xpHeading} items={experience} />
+<SkillsGrid technicalSkills={technicalSkills} softSkills={softSkills} languages={languagesSpoken} />
+
+{
+  !compact && (
+    <section class="resume-section vibes">
+      <h2>Personally...</h2>
+      <p class="muted-long">{interests}</p>
+    </section>
+  )
+}
+
+<style>
+  .resume-intro .resume-summary {
+    font-size: clamp(1.05rem, 2.35vw, 1.184rem);
+    line-height: 1.76;
+    color: var(--color-text-muted);
+  }
+
+  .edu-grid {
+    display: grid;
+    gap: var(--space-md);
+    margin-top: var(--space-sm);
+  }
+
+  .edu-card {
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-panel-border);
+    padding: clamp(18px, 3vw, 28px);
+    background: radial-gradient(circle at 110% -20%, color-mix(in srgb, var(--color-accent) 22%, transparent), transparent 45%), rgba(255, 255, 255, 0.02);
+    box-shadow:
+      inset 0 1px rgba(255, 255, 255, 0.05),
+      0 20px 50px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+  }
+
+  .edu-card__main {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .edu-card__brand {
+    flex-shrink: 0;
+  }
+
+  .org-logo-frame {
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+  }
+
+  .org-logo-img {
+    object-fit: contain;
+    display: block;
+  }
+
+  .edu-org-logo-frame {
+    width: 60px;
+    height: 60px;
+    padding: 9px;
+  }
+
+  .edu-org-logo-frame .org-logo-img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .edu-institution {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--color-text-muted);
+  }
+
+  .edu-range {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  h3 {
+    margin: 0;
+    letter-spacing: -0.015em;
+  }
+
+  .resume-section h2 {
+    margin: calc(var(--space-lg) / 3) 0 var(--space-sm);
+    letter-spacing: -0.02em;
+  }
+
+  .muted-long {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    font-size: clamp(1rem, 2.35vw, 1.0875rem);
+    margin-bottom: calc(var(--space-lg));
+  }
+
+  html.view-readable-root .edu-card {
+    background: radial-gradient(circle at 112% -20%, color-mix(in srgb, var(--color-accent) 9%, transparent), transparent 45%), #ffffffbf;
+    box-shadow:
+      inset 0 1px rgba(255, 255, 255, 0.9),
+      0 34px 80px rgba(0, 0, 0, 0.05);
+    border-color: rgba(29, 29, 31, 0.12);
+  }
+
+  html.view-readable-root .edu-org-logo-frame {
+    background: #ffffff;
+    border-color: rgba(29, 29, 31, 0.1);
+  }
+</style>

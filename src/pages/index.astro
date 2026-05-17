@@ -1,0 +1,433 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Scene3D from '../components/Scene3D.astro';
+import ResumeSections from '../components/resume/ResumeSections.astro';
+import {
+  identity,
+  education,
+  experience,
+  technicalSkills,
+  softSkills,
+  languagesSpoken,
+  interests,
+} from '../data/resume';
+import { sitePath } from '../utils/paths';
+
+const pageTitle = `${identity.name}'s Space'`;
+---
+
+<SiteLayout title={pageTitle}>
+  <div class="home">
+    <Scene3D />
+
+    <div class="home__content">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero__top">
+          <div>
+            <h1 id="hero-title">{identity.name}</h1>
+            <p class="hero__tagline">{identity.tagline}</p>
+          </div>
+          <div class="view-toggle" role="group" aria-label="Presentation mode">
+            <button type="button" class="view-toggle__btn is-active" data-mode="interactive" id="btn-interactive">
+              Interactive
+            </button>
+            <button type="button" class="view-toggle__btn" data-mode="readable" id="btn-readable">
+              Readable
+            </button>
+          </div>
+        </div>
+
+        <p class="hero__intro">{identity.summary}</p>
+
+        <div class="hero__actions">
+          <button type="button" class="btn btn--ghost btn--duck" id="btn-duck-toggle" aria-pressed="false">
+            DUCK!
+          </button>
+          <a class="btn btn--primary" href={sitePath('resume')}>Resume</a>
+          <a class="btn btn--ghost" href={sitePath('blog')}>Blog</a>
+        </div>
+      </section>
+
+      <section class="readable-panel" data-readable-panel hidden>
+        <ResumeSections
+          summary={identity.summary}
+          education={education}
+          experience={experience}
+          technicalSkills={technicalSkills}
+          softSkills={softSkills}
+          languagesSpoken={languagesSpoken}
+          interests={interests}
+          compact
+        />
+      </section>
+    </div>
+  </div>
+</SiteLayout>
+
+<style>
+  .home {
+    position: relative;
+    min-height: calc(100vh - var(--header-h));
+  }
+
+  /* Content stacks above Scene3D (fixed z-index 0); pointer events pass through except scene. */
+  .home__content {
+    position: relative;
+    z-index: var(--z-content);
+    max-width: var(--layout-max);
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg) var(--space-2xl);
+    pointer-events: none;
+  }
+
+  .home__content > * {
+    pointer-events: auto;
+  }
+
+  .hero__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+  }
+
+  body:not(.mode-readable) .hero {
+    text-shadow: 0 8px 32px rgba(0, 0, 0, 0.65);
+  }
+
+  .hero__tagline {
+    margin: var(--space-sm) 0 0;
+    font-size: 1.05rem;
+    font-weight: 500;
+    max-width: 36ch;
+    color: rgba(245, 245, 247, 0.92);
+  }
+
+  html.view-readable-root .hero__tagline {
+    color: var(--color-text-muted);
+  }
+
+  .hero__intro {
+    font-size: 1.02rem;
+    max-width: 56ch;
+    margin-bottom: var(--space-xl);
+    color: rgba(245, 245, 247, 0.88);
+  }
+
+  html.view-readable-root .hero__intro {
+    color: var(--color-text-primary);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    align-items: center;
+  }
+
+  .btn--duck {
+    font: inherit;
+  }
+
+  body:not(.mode-readable) .btn--duck {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.14);
+    color: rgba(245, 245, 247, 0.95);
+  }
+
+  body:not(.mode-readable) .btn--duck:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .btn--duck:disabled {
+    opacity: 0.55;
+    cursor: wait;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 1.15rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .btn--primary {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  .btn--primary:hover {
+    filter: brightness(1.06);
+    color: #fff;
+  }
+
+  .btn--ghost {
+    background: var(--color-panel);
+    border-color: var(--color-panel-border);
+    color: var(--color-text-primary);
+  }
+
+  html.view-readable-root .btn--ghost {
+    background: color-mix(in srgb, var(--color-text-primary) 6%, var(--color-bg-deep));
+    border-color: var(--color-panel-border);
+    box-shadow:
+      0 6px 20px color-mix(in srgb, var(--color-text-primary) 8%, transparent),
+      0 1px 0 color-mix(in srgb, var(--color-text-primary) 6%, transparent);
+  }
+
+  .view-toggle {
+    display: inline-flex;
+    padding: 4px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  html.view-readable-root .view-toggle {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: var(--color-panel-border);
+  }
+
+  .view-toggle__btn {
+    border: none;
+    border-radius: 999px;
+    padding: 0.45rem 1rem;
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    background: transparent;
+  }
+
+  html.view-readable-root .view-toggle__btn {
+    color: var(--color-text-muted);
+  }
+
+  .view-toggle__btn.is-active {
+    background: #fff;
+    color: #0a0a0c;
+    font-weight: 600;
+  }
+
+  html.view-readable-root .view-toggle__btn.is-active {
+    background: var(--color-text-primary);
+    color: var(--color-bg-deep);
+  }
+
+  .readable-panel {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  html.view-readable-root .readable-panel {
+    border-top-color: var(--color-panel-border);
+  }
+
+  /*
+   * Section headings + intro sit on the normal page background (dark in dark theme).
+   * Paper surfaces live inside nested components — scoped CSS must use :global() to reach them.
+   */
+  html.view-readable-root .readable-panel :global(.edu-card),
+  html.view-readable-root .readable-panel :global(.timeline-card),
+  html.view-readable-root .readable-panel :global(.resume-section.grids .grid) {
+    color: #1d1d1f;
+    --color-text-primary: #1d1d1f;
+    --color-text-muted: #6e6e73;
+  }
+
+  .readable-panel[hidden] {
+    display: none !important;
+  }
+</style>
+
+<script>
+  import type { PortfolioMountApi } from '../scripts/scene/portfolioScene';
+
+  /** Must match SiteLayout head boot (`portfolio-view-mode`). */
+  const STORAGE_KEY = 'portfolio-view-mode';
+  const LEGACY_STORAGE_KEY = 'rjaychen-site-mode';
+  type Mode = 'interactive' | 'readable';
+
+  let homeUiAbort: AbortController | null = null;
+
+  let api: PortfolioMountApi | null = null;
+
+  function syncDuckButton(): void {
+    const duckBtn = document.getElementById('btn-duck-toggle') as HTMLButtonElement | null;
+    if (!duckBtn) return;
+    if (!api) {
+      duckBtn.textContent = 'DUCK!';
+      duckBtn.setAttribute('aria-pressed', 'false');
+      return;
+    }
+    const glb = api.getShowGlb();
+    duckBtn.textContent = glb ? 'No duck :(' : 'DUCK!';
+    duckBtn.setAttribute('aria-pressed', glb ? 'true' : 'false');
+  }
+
+  function readPreference(): Mode {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const stored =
+      (localStorage.getItem(STORAGE_KEY) as Mode | null) ??
+      (localStorage.getItem(LEGACY_STORAGE_KEY) as Mode | null);
+    if (stored === 'interactive' || stored === 'readable') {
+      return stored;
+    }
+    return mq.matches ? 'readable' : 'interactive';
+  }
+
+  function setButtons(mode: Mode): void {
+    document.getElementById('btn-interactive')?.classList.toggle('is-active', mode === 'interactive');
+    document.getElementById('btn-readable')?.classList.toggle('is-active', mode === 'readable');
+  }
+
+  function applyBodyMode(mode: Mode): void {
+    const layer = document.querySelector('[data-scene-layer]') as HTMLElement | null;
+    const readablePanel = document.querySelector('[data-readable-panel]') as HTMLElement | null;
+    const duckBtn = document.getElementById('btn-duck-toggle') as HTMLButtonElement | null;
+
+    document.documentElement.classList.toggle('view-readable-root', mode === 'readable');
+    document.body.classList.toggle('mode-readable', mode === 'readable');
+    layer?.classList.toggle('scene-layer--hidden', mode === 'readable');
+    if (readablePanel) {
+      readablePanel.hidden = mode !== 'readable';
+    }
+    if (layer) {
+      layer.setAttribute('aria-hidden', mode === 'readable' ? 'true' : 'false');
+    }
+    if (duckBtn) {
+      duckBtn.hidden = mode === 'readable';
+    }
+  }
+
+  function disposeScene(): void {
+    api?.dispose();
+    api = null;
+  }
+
+  async function bootScene(): Promise<void> {
+    const canvas = document.querySelector('#portfolio-canvas') as HTMLCanvasElement | null;
+    const root = document.querySelector('[data-portfolio-scene]') as HTMLElement | null;
+    if (!canvas || !root || api) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const { mount } = await import('../scripts/scene/portfolioScene');
+    api = mount({ canvas, container: root, reducedMotion: reduced });
+    syncDuckButton();
+  }
+
+  function setMode(mode: Mode): void {
+    try {
+      localStorage.setItem(STORAGE_KEY, mode);
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
+    } catch {}
+    setButtons(mode);
+    applyBodyMode(mode);
+    if (mode === 'interactive') {
+      const start = (): void => {
+        void disposeScene();
+        void bootScene();
+      };
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(start, { timeout: 2200 });
+      } else {
+        setTimeout(start, 0);
+      }
+    } else {
+      disposeScene();
+    }
+  }
+
+  function ensureHomeClickDelegation(): void {
+    homeUiAbort?.abort();
+    homeUiAbort = new AbortController();
+    const { signal } = homeUiAbort;
+
+    document.addEventListener(
+      'click',
+      (e) => {
+        const t = e.target as HTMLElement | null;
+        if (!t?.closest?.('.home')) return;
+
+        if (t.closest('#btn-interactive')) {
+          setMode('interactive');
+          return;
+        }
+        if (t.closest('#btn-readable')) {
+          setMode('readable');
+        }
+      },
+      { signal }
+    );
+
+    document.addEventListener(
+      'click',
+      async (e) => {
+        const duck = (e.target as HTMLElement)?.closest('#btn-duck-toggle') as HTMLButtonElement | null;
+        if (!duck || duck.hidden || !document.querySelector('.home')) return;
+        if (!api) return;
+        duck.disabled = true;
+        try {
+          const next = !api.getShowGlb();
+          await api.setShowGlb(next);
+        } catch {
+          /* Load failed — remains torus */
+        } finally {
+          duck.disabled = false;
+          syncDuckButton();
+        }
+      },
+      { signal }
+    );
+  }
+
+  function initHomePage(): void {
+    if (!document.querySelector('.home')) return;
+
+    ensureHomeClickDelegation();
+
+    const mode = readPreference();
+    setButtons(mode);
+    applyBodyMode(mode);
+    if (mode === 'interactive') {
+      const start = (): void => {
+        disposeScene();
+        void bootScene();
+      };
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(start, { timeout: 2200 });
+      } else {
+        setTimeout(start, 0);
+      }
+    } else {
+      disposeScene();
+    }
+  }
+
+  function onAstroPageLoad(): void {
+    if (!document.querySelector('.home')) {
+      disposeScene();
+      return;
+    }
+    initHomePage();
+  }
+
+  document.addEventListener('astro:page-load', onAstroPageLoad);
+
+  if (document.querySelector('.home')) {
+    queueMicrotask(onAstroPageLoad);
+  }
+</script>

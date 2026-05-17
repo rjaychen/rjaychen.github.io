@@ -1,0 +1,363 @@
+---
+---
+
+<div data-scene-layer class="scene-layer">
+  <div class="scene-viewport-mask">
+    <div class="scene-container" id="scene-container-root" data-portfolio-scene>
+      <canvas id="portfolio-canvas" aria-label="Interactive 3D preview — drag to orbit. Toggle DUCK! for <>.glb or the procedural torus."></canvas>
+
+      <div class="scene-hud" aria-label="Realtime material controls" id="scene-controls">
+        <div class="hud-row hud-row--muted hud-row--split">
+          <span class="pill">Realtime</span>
+          <div class="hud-metrics">
+            <small class="muted hud-hint">Drag to orbit · pinch-friendly canvas</small>
+            <div class="hud-fps" role="status" aria-live="polite" aria-atomic="true">
+              <span data-scene-fps>—</span>
+              <span class="hud-fps-unit">fps</span>
+            </div>
+          </div>
+        </div>
+        <div class="hud-rows">
+          <label class="hud-slider">
+            <span>Metalness</span>
+            <input type="range" min="0" max="1" step="0.02" value="0.28" data-scene-slider="metalness" />
+          </label>
+          <label class="hud-slider">
+            <span>Roughness</span>
+            <input type="range" min="0" max="1" step="0.02" value="0.74" data-scene-slider="roughness" />
+          </label>
+          <label class="hud-slider">
+            <span>Morph points <output class="hud-value-tag" data-scene-particles-value for="portfolio-scene-particles">12,000</output></span>
+            <input
+              id="portfolio-scene-particles"
+              type="range"
+              min="500"
+              max="30000"
+              step="500"
+              value="12000"
+              data-scene-slider="particles"
+            />
+          </label>
+          <label class="hud-slider hud-slider--procedural-only">
+            <span>Vertex rhythm</span>
+            <input type="range" min="0" max="1" step="0.02" value="0.5" data-scene-slider="warp" />
+          </label>
+          <label class="hud-slider hud-slider--color">
+            <span>Accent color</span>
+            <input type="color" value="#0071e3" data-scene-accent />
+          </label>
+          <small class="hud-caption">Sliders apply to the procedural mesh and imported GLBs. Morph points control the torus ↔ Duck particle dissolve.</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .scene-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    transition:
+      opacity 0.65s cubic-bezier(0.25, 1, 0.5, 1),
+      transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .scene-layer.scene-layer--hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    pointer-events: none;
+  }
+
+  .scene-viewport-mask {
+    position: absolute;
+    inset: 0;
+    overflow: clip;
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(255, 255, 255, 0.6) 60%,
+      transparent
+    );
+    mask-image: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6) 60%, transparent);
+    pointer-events: none;
+    background: radial-gradient(circle at 50% -10%, color-mix(in srgb, var(--color-accent) 18%, transparent), transparent 55%);
+  }
+
+  .scene-layer:not(.scene-layer--hidden) .scene-viewport-mask {
+    pointer-events: auto;
+  }
+
+  @media (max-width: 920px) {
+    .scene-viewport-mask {
+      -webkit-mask-image: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.75) 80%, transparent);
+      mask-image: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.75) 80%, transparent);
+    }
+
+    .scene-layer {
+      position: sticky;
+      top: 72px;
+      height: clamp(320px, 58vh, 520px);
+    }
+
+    .scene-layer.scene-layer--hidden {
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-4px);
+    }
+
+    .scene-container {
+      min-height: 100%;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      margin: var(--space-sm);
+    }
+
+    canvas {
+      pointer-events: auto;
+    }
+
+    .scene-hud {
+      bottom: calc(var(--space-md) + 8px);
+    }
+  }
+
+  .scene-container {
+    position: relative;
+    width: min(1380px, 100%);
+    margin: 0 auto;
+    padding: clamp(32px, 6vw, 72px);
+    height: calc(100vh - 120px);
+    display: grid;
+    place-items: center;
+    outline: none;
+    pointer-events: auto;
+    touch-action: none;
+    background:
+      radial-gradient(circle at 30% -20%, rgba(120, 120, 128, 0.18), transparent 45%),
+      rgba(17, 17, 21, 0.45);
+    border-radius: clamp(28px, 4vw, 48px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 42px 120px rgba(0, 0, 0, 0.52);
+    overflow: clip;
+    isolation: isolate;
+  }
+
+  @media (max-width: 920px) {
+    .scene-container {
+      padding: var(--space-sm);
+      margin: 0;
+      height: 100%;
+    }
+  }
+
+  canvas {
+    width: min(940px, 100%);
+    height: min(76vh, 720px);
+    display: block;
+    border-radius: var(--radius-md);
+    background: radial-gradient(circle at 38% -10%, rgba(99, 150, 255, 0.18), transparent 55%);
+  }
+
+  .scene-container canvas {
+    filter: saturate(118%);
+  }
+
+  .scene-hud {
+    pointer-events: auto;
+    position: absolute;
+    right: clamp(18px, 4vw, 48px);
+    bottom: clamp(18px, 4vw, 48px);
+    width: clamp(232px, 28vw, 320px);
+    padding: clamp(14px, 2vw, 18px);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(12, 12, 17, 0.55);
+    -webkit-backdrop-filter: saturate(155%) blur(22px);
+    backdrop-filter: saturate(155%) blur(22px);
+    color: rgba(240, 240, 245, 0.95);
+    font-size: 0.8125rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  @supports not ((backdrop-filter: blur(12px))) {
+    .scene-hud {
+      background: rgba(12, 12, 17, 0.9);
+    }
+  }
+
+  .hud-rows {
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .hud-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .hud-slider {
+    display: grid;
+    gap: 8px;
+  }
+
+  .hud-slider span {
+    color: rgba(230, 230, 237, 0.78);
+    font-size: 0.75rem;
+  }
+
+  .hud-caption {
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.78125rem;
+  }
+
+  .hud-row--split {
+    align-items: flex-start;
+  }
+
+  .hud-metrics {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    text-align: right;
+    min-width: 0;
+    text-transform: none;
+  }
+
+  .hud-hint {
+    max-width: 12.5rem;
+    line-height: 1.35;
+  }
+
+  .hud-fps {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
+    padding: 0.22rem 0.58rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.045);
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+  }
+
+  .hud-fps [data-scene-fps] {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: rgba(248, 248, 252, 0.96);
+    min-width: 2.25ch;
+    text-align: right;
+  }
+
+  .hud-fps [data-scene-fps][data-low='true'] {
+    color: rgba(255, 186, 138, 0.96);
+  }
+
+  .hud-fps-unit {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.72;
+  }
+
+  .hud-value-tag {
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    margin-inline-start: 0.35rem;
+    opacity: 0.88;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+  }
+
+  .muted {
+    color: rgba(255, 255, 255, 0.62);
+    letter-spacing: 0;
+    text-transform: none;
+    font-size: 0.7625rem;
+  }
+
+  .hud-slider input[type='range'] {
+    appearance: none;
+    border-radius: 999px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    outline: none;
+  }
+
+  .hud-slider input[type='range']::-webkit-slider-thumb {
+    appearance: none;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #fefefe;
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.25),
+      0 18px 32px rgba(0, 0, 0, 0.32);
+    cursor: pointer;
+  }
+
+  .hud-slider input[type='range']::-moz-range-thumb {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #fefefe;
+    border: none;
+  }
+
+  .hud-slider--color input[type='color'] {
+    appearance: none;
+    width: 100%;
+    height: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    cursor: pointer;
+    padding: 2px 4px;
+  }
+
+  .hud-slider--color input[type='color']::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border-radius: calc(var(--radius-sm) - 2px);
+  }
+
+  .hud-slider--color input[type='color']::-webkit-color-swatch {
+    border: none;
+    border-radius: calc(var(--radius-sm) - 2px);
+  }
+
+  /* Vertex rhythm only affects the procedural mesh — dim when GLB is shown */
+  [data-portfolio-scene][data-portfolio-model='glb'] .hud-slider--procedural-only {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  @media (max-width: 540px) {
+    .scene-hud {
+      position: sticky;
+      width: calc(100% - 2 * var(--space-sm));
+      margin: var(--space-sm) auto 0;
+    }
+  }
+
+</style>

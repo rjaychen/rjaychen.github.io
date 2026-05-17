@@ -1,0 +1,240 @@
+---
+import { filterExperienceToolIcons, type TimelineEntry } from '../../data/resume';
+import SkillIcon from './SkillIcon.astro';
+
+interface Props {
+  items: TimelineEntry[];
+  heading?: string;
+}
+
+const { items, heading = 'Experience' } = Astro.props;
+---
+
+<section class="resume-section timeline">
+  <h2>{heading}</h2>
+  <div class="stack">
+    {
+      items.map((item) => {
+        const toolIcons = filterExperienceToolIcons(item.tools);
+        return (
+          <article class="timeline-card surface">
+            <div class="timeline-card__main">
+              <header>
+                <h3>{item.role}</h3>
+                <p class="muted">
+                  {item.orgUrl ? (
+                    <a href={item.orgUrl} target="_blank" rel="noopener noreferrer">
+                      {item.organization}
+                    </a>
+                  ) : (
+                    item.organization
+                  )}
+                </p>
+              </header>
+              <footer class="meta">{item.range}</footer>
+              {toolIcons.length > 0 && (
+                <ul class="tool-row" aria-label="Tools used">
+                  {toolIcons.map((id) => (
+                    <li>
+                      <SkillIcon id={id} size={18} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            {item.logoSrc && (
+              <div class="timeline-card__brand">
+                <span class="org-logo-frame">
+                  <img
+                    class="org-logo-img"
+                    src={item.logoSrc}
+                    alt={item.logoAlt ?? ''}
+                    width="48"
+                    height="48"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </span>
+              </div>
+            )}
+          </article>
+        );
+      })
+    }
+  </div>
+</section>
+
+<style>
+  .stack {
+    display: grid;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+  }
+
+  .timeline-card {
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-panel-border);
+    background: linear-gradient(120deg, var(--color-panel), rgba(255, 255, 255, 0.015));
+    box-shadow:
+      inset 0 1px rgba(255, 255, 255, 0.05),
+      0 20px 50px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-md);
+    transition:
+      background 0.18s ease,
+      border-color 0.18s ease,
+      box-shadow 0.18s ease,
+      transform 0.18s ease;
+  }
+
+  .timeline-card__main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .timeline-card__brand {
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  .org-logo-frame {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    padding: 8px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+  }
+
+  .org-logo-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .timeline-card:hover,
+  .timeline-card:focus-within {
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.03));
+    border-color: var(--color-accent-soft);
+    box-shadow:
+      inset 0 1px rgba(255, 255, 255, 0.1),
+      0 28px 64px rgba(0, 0, 0, 0.25);
+    transform: translateY(-1px);
+  }
+
+  /* Dim sibling cards on hover (subtle, not distracting) */
+  .stack:hover .timeline-card:not(:hover):not(:focus-within) {
+    opacity: 0.72;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .timeline-card,
+    .stack:hover .timeline-card:not(:hover):not(:focus-within) {
+      transition: none;
+      transform: none;
+      opacity: 1;
+    }
+  }
+
+  h3 {
+    margin: 0;
+    font-size: clamp(1.05rem, 2.4vw, 1.2rem);
+  }
+
+  .muted {
+    margin: 0;
+    font-size: 0.964rem;
+    color: var(--color-text-muted);
+  }
+
+  .meta {
+    font-size: 0.8675rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Tool icons row */
+  .tool-row {
+    list-style: none;
+    margin: var(--space-xs) 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .tool-row li {
+    display: flex;
+    align-items: center;
+    padding: 4px 6px;
+    border-radius: 6px;
+    border: 1px solid var(--color-panel-border);
+    background: rgba(255, 255, 255, 0.025);
+    transition: background 0.12s ease, border-color 0.12s ease;
+  }
+
+  .timeline-card:hover .tool-row li,
+  .timeline-card:focus-within .tool-row li {
+    background: rgba(255, 255, 255, 0.055);
+    border-color: var(--color-accent-soft);
+  }
+
+  html.view-readable-root .timeline-card {
+    background: #ffffff;
+    border-color: rgba(29, 29, 31, 0.1);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  html.view-readable-root .timeline-card:hover,
+  html.view-readable-root .timeline-card:focus-within {
+    background: #f9f9fb;
+    border-color: var(--color-accent);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  html.view-readable-root .stack:hover .timeline-card:not(:hover):not(:focus-within) {
+    opacity: 0.8;
+  }
+
+  html.view-readable-root .tool-row li {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(29, 29, 31, 0.1);
+  }
+
+  html.view-readable-root .timeline-card:hover .tool-row li {
+    background: rgba(0, 113, 227, 0.05);
+  }
+
+  html.view-readable-root .tool-row :global(.skill-icon) {
+    filter: none;
+    opacity: 0.7;
+  }
+
+  html.view-readable-root .org-logo-frame {
+    background: #ffffff;
+    border-color: rgba(29, 29, 31, 0.1);
+  }
+</style>

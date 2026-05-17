@@ -1,0 +1,121 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { sitePath } from '../../utils/paths';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const title = `${post.data.title} · Blog`;
+const when = new Date(post.data.date);
+---
+
+<SiteLayout title={title} description={post.data.description ?? ''}>
+  <article class="post">
+    <header class="post__header">
+      <p class="post__meta">
+        <time datetime={when.toISOString()}>
+          {when.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+      </p>
+      <h1>{post.data.title}</h1>
+      {post.data.description && <p class="post__deck">{post.data.description}</p>}
+    </header>
+    <div class="post__body prose">
+      <Content />
+    </div>
+    <p class="post__back">
+      <a href={sitePath('blog')}>← All posts</a>
+    </p>
+  </article>
+</SiteLayout>
+
+<style>
+  .post {
+    max-width: var(--layout-max);
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg) var(--space-2xl);
+  }
+
+  .post__header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .post__meta {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-sm);
+  }
+
+  html.view-readable-root .post__meta {
+    color: var(--color-text-muted);
+  }
+
+  .post__deck {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    max-width: 55ch;
+  }
+
+  html.view-readable-root .post__deck {
+    color: var(--color-text-muted);
+  }
+
+  .post__body :global(h2) {
+    margin-top: var(--space-2xl);
+  }
+
+  .post__body :global(h3) {
+    margin-top: var(--space-xl);
+  }
+
+  .post__body :global(pre) {
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    border: 1px solid var(--color-panel-border);
+    font-size: 0.9375rem;
+  }
+
+  .post__body :global(code) {
+    font-size: 0.92em;
+  }
+
+  .post__body :global(p),
+  .post__body :global(li) {
+    max-width: var(--content-max);
+    line-height: 1.7;
+  }
+
+  .post__back {
+    margin-top: var(--space-2xl);
+    font-size: 0.95rem;
+  }
+
+  /* Normalize all inline images */
+  .post__body :global(img) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: var(--space-lg) auto;
+    border-radius: var(--radius-md);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+  }
+
+  /* iframes (YouTube embeds etc.) */
+  .post__body :global(iframe) {
+    display: block;
+    max-width: 100%;
+    margin: var(--space-lg) auto;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-panel-border);
+  }
+</style>

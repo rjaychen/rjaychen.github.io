@@ -1,0 +1,35 @@
+---
+import type { SkillId } from '../../data/resume';
+import { skillIcons } from '../../data/skillIcons';
+
+interface Props {
+  id: SkillId;
+  size?: number;
+}
+
+const { id, size = 20 } = Astro.props;
+const icon = skillIcons[id];
+---
+
+{icon && (
+  <img
+    src={icon.src}
+    alt={icon.alt}
+    title={icon.alt}
+    width={size}
+    height={size}
+    loading="lazy"
+    decoding="async"
+    class="skill-icon"
+  />
+)}
+
+<style>
+  .skill-icon {
+    display: block;
+    object-fit: contain;
+    opacity: 0.75;
+    transition: opacity 0.15s ease;
+    flex-shrink: 0;
+  }
+</style>
