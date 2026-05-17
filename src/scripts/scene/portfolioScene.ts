@@ -74,7 +74,10 @@ function upgradeToPhysical(root: THREE.Object3D): void {
     const next = mats.map((mat) => {
       if (mat instanceof THREE.MeshStandardMaterial && !(mat instanceof THREE.MeshPhysicalMaterial)) {
         const p = new THREE.MeshPhysicalMaterial();
-        p.copy(mat);
+        // Use the standard prototype's copy to avoid accessing physical-only
+        // vector properties (e.g. sheenColor, specularColor) that don't exist
+        // on a plain MeshStandardMaterial, which causes "v is undefined" crashes.
+        THREE.MeshStandardMaterial.prototype.copy.call(p, mat);
         return p;
       }
       return mat;
@@ -96,15 +99,10 @@ function collectPhysicalMaterials(root: THREE.Object3D): THREE.MeshPhysicalMater
   return list;
 }
 
-/** Absolute URL for `portfolio.glb`, respecting GitHub Pages `BASE_URL`. */
+/** Relative URL for `portfolio.glb`, respecting Astro's BASE_URL. */
 export function resolvePortfolioGlbUrl(): string {
-  const basePath = `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}`;
-  const origin =
-    typeof globalThis.location !== 'undefined' && globalThis.location.origin
-      ? globalThis.location.origin
-      : (import.meta.env.SITE ?? 'http://localhost').replace(/\/?$/, '');
-  const baseAbs = new URL(basePath, `${origin}/`).href;
-  return new URL(PORTFOLIO_GLB_PATH, baseAbs).href;
+  const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+  return `${base}${PORTFOLIO_GLB_PATH}`;
 }
 
 function prepareGlbRoot(root: THREE.Object3D): void {
