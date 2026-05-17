@@ -7,22 +7,31 @@ interface Props {
   class?: string;
 }
 
-const { github, linkedIn, googleScholar, size = 22, class: className = '' } = Astro.props;
+/** Respects `astro.config.mjs` `base`, so icons resolve on GitHub Pages subpaths too. */
+const iconUrl = (slug: string) => `${import.meta.env.BASE_URL}icons/social/${slug}.svg`;
+
+const { github, linkedIn, googleScholar, size = 18, class: className = '' } = Astro.props;
 
 const links = [
-  { href: github,        src: '/icons/social/github.svg',   label: 'GitHub'         },
-  { href: linkedIn,      src: '/icons/social/linkedin.svg', label: 'LinkedIn'       },
-  { href: googleScholar, src: '/icons/social/scholar.svg',  label: 'Google Scholar' },
+  { href: github, slug: 'github' as const, label: 'GitHub' },
+  { href: linkedIn, slug: 'linkedin' as const, label: 'LinkedIn' },
+  { href: googleScholar, slug: 'scholar' as const, label: 'Google Scholar' },
 ].filter((l) => l.href);
 ---
 
 <div class:list={['social-links', className]}>
-  {links.map((l) => (
-    <a href={l.href} aria-label={l.label} target="_blank" rel="noopener noreferrer" class="social-link">
-      <img src={l.src} alt="" aria-hidden="true" width={size} height={size} loading="lazy" decoding="async" />
-      <span class="visually-hidden">{l.label}</span>
-    </a>
-  ))}
+  {
+    links.map((l) => (
+      <a href={l.href} aria-label={l.label} target="_blank" rel="noopener noreferrer" class="social-link">
+        <span
+          class="social-icon-mask"
+          aria-hidden="true"
+          style={`--social-mask: url("${iconUrl(l.slug)}"); --social-icon-size: ${size}px`}
+        />
+        <span class="visually-hidden">{l.label}</span>
+      </a>
+    ))
+  }
 </div>
 
 <style>
@@ -50,34 +59,36 @@ const links = [
     border-color: var(--color-accent-soft);
   }
 
-  .social-link img {
-    width: 18px;
-    height: 18px;
-    object-fit: contain;
+  .social-icon-mask {
+    display: block;
+    width: var(--social-icon-size, 18px);
+    height: var(--social-icon-size, 18px);
     opacity: 0.7;
     transition: opacity 0.15s ease;
+    background-color: currentColor;
+    -webkit-mask: var(--social-mask) center / contain no-repeat;
+    mask: var(--social-mask) center / contain no-repeat;
   }
 
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme='light']) .social-link img {
+    :root:not([data-theme='light']) .social-link .social-icon-mask {
       filter: invert(1);
     }
 
-    :root:not([data-theme='light']) :global(body.page-resume) .social-link img {
+    :root:not([data-theme='light']) :global(body.page-resume) .social-link .social-icon-mask {
       filter: none;
     }
   }
 
-  :root[data-theme='dark'] .social-link img {
+  :root[data-theme='dark'] .social-link .social-icon-mask {
     filter: invert(1);
   }
 
-  /* Resume is always a light paper layout — keep icons dark in every theme */
-  :root[data-theme='dark'] :global(body.page-resume) .social-link img {
+  :root[data-theme='dark'] :global(body.page-resume) .social-link .social-icon-mask {
     filter: none;
   }
 
-  .social-link:hover img {
+  .social-link:hover .social-icon-mask {
     opacity: 1;
   }
 </style>

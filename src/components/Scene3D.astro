@@ -6,47 +6,91 @@
     <div class="scene-container" id="scene-container-root" data-portfolio-scene>
       <canvas id="portfolio-canvas" aria-label="Interactive 3D preview — drag to orbit. Toggle DUCK! for <>.glb or the procedural torus."></canvas>
 
-      <div class="scene-hud" aria-label="Realtime material controls" id="scene-controls">
-        <div class="hud-row hud-row--muted hud-row--split">
-          <span class="pill">Realtime</span>
-          <div class="hud-metrics">
-            <small class="muted hud-hint">Drag to orbit · pinch-friendly canvas</small>
-            <div class="hud-fps" role="status" aria-live="polite" aria-atomic="true">
-              <span data-scene-fps>—</span>
-              <span class="hud-fps-unit">fps</span>
+      <div class="scene-hud-slot" data-scene-hud-slot>
+        <button
+          type="button"
+          class="scene-hud-pull"
+          data-scene-hud-toggle
+          aria-expanded="false"
+          aria-controls="scene-controls"
+          aria-label="Open material controls"
+        >
+          <svg class="scene-hud-pull__icon scene-hud-pull__icon--sliders" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M4 7h16M4 12h10M4 17h16"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            />
+            <circle cx="16" cy="12" r="2" fill="currentColor" />
+            <circle cx="9" cy="7" r="2" fill="currentColor" />
+            <circle cx="14" cy="17" r="2" fill="currentColor" />
+          </svg>
+          <svg class="scene-hud-pull__icon scene-hud-pull__icon--close" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+          </svg>
+        </button>
+        <div class="scene-hud-backdrop" data-scene-hud-backdrop aria-hidden="true"></div>
+        <div class="scene-hud" aria-label="Realtime material controls" id="scene-controls">
+          <div class="hud-row hud-row--muted hud-row--split">
+            <span class="pill">Realtime</span>
+            <div class="hud-metrics">
+              <small class="muted hud-hint">Drag to orbit · mobile-friendly canvas</small>
+              <div class="hud-fps" role="status" aria-live="polite" aria-atomic="true">
+                <span data-scene-fps>—</span>
+                <span class="hud-fps-unit">fps</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="hud-rows">
-          <label class="hud-slider">
-            <span>Metalness</span>
-            <input type="range" min="0" max="1" step="0.02" value="0.28" data-scene-slider="metalness" />
-          </label>
-          <label class="hud-slider">
-            <span>Roughness</span>
-            <input type="range" min="0" max="1" step="0.02" value="0.74" data-scene-slider="roughness" />
-          </label>
-          <label class="hud-slider">
-            <span>Morph points <output class="hud-value-tag" data-scene-particles-value for="portfolio-scene-particles">12,000</output></span>
-            <input
-              id="portfolio-scene-particles"
-              type="range"
-              min="500"
-              max="30000"
-              step="500"
-              value="12000"
-              data-scene-slider="particles"
-            />
-          </label>
-          <label class="hud-slider hud-slider--procedural-only">
-            <span>Vertex rhythm</span>
-            <input type="range" min="0" max="1" step="0.02" value="0.5" data-scene-slider="warp" />
-          </label>
-          <label class="hud-slider hud-slider--color">
-            <span>Accent color</span>
-            <input type="color" value="#0071e3" data-scene-accent />
-          </label>
-          <small class="hud-caption">Sliders apply to the procedural mesh and imported GLBs. Morph points control the torus ↔ Duck particle dissolve.</small>
+          <div class="hud-rows">
+            <div class="hud-slider">
+              <label class="hud-slider-label" for="portfolio-scene-metalness">Metalness</label>
+              <input
+                id="portfolio-scene-metalness"
+                type="range"
+                min="0"
+                max="1"
+                step="0.02"
+                value="0.28"
+                data-scene-slider="metalness"
+              />
+            </div>
+            <div class="hud-slider">
+              <label class="hud-slider-label" for="portfolio-scene-roughness">Roughness</label>
+              <input
+                id="portfolio-scene-roughness"
+                type="range"
+                min="0"
+                max="1"
+                step="0.02"
+                value="0.74"
+                data-scene-slider="roughness"
+              />
+            </div>
+            <div class="hud-slider">
+              <label class="hud-slider-label" for="portfolio-scene-particles">
+                Morph points <output class="hud-value-tag" data-scene-particles-value for="portfolio-scene-particles">12,000</output>
+              </label>
+              <input
+                id="portfolio-scene-particles"
+                type="range"
+                min="500"
+                max="30000"
+                step="500"
+                value="12000"
+                data-scene-slider="particles"
+              />
+            </div>
+            <div class="hud-slider hud-slider--procedural-only">
+              <label class="hud-slider-label" for="portfolio-scene-warp">Vertex rhythm</label>
+              <input id="portfolio-scene-warp" type="range" min="0" max="1" step="0.02" value="0.5" data-scene-slider="warp" />
+            </div>
+            <div class="hud-slider hud-slider--color">
+              <label class="hud-slider-label" for="portfolio-scene-accent">Accent color</label>
+              <input id="portfolio-scene-accent" type="color" value="#0071e3" data-scene-accent />
+            </div>
+            <small class="hud-caption">Feel free to play with these!</small>
+          </div>
         </div>
       </div>
     </div>
@@ -119,10 +163,6 @@
     canvas {
       pointer-events: auto;
     }
-
-    .scene-hud {
-      bottom: calc(var(--space-md) + 8px);
-    }
   }
 
   .scene-container {
@@ -168,12 +208,95 @@
     filter: saturate(118%);
   }
 
-  .scene-hud {
-    pointer-events: auto;
+  /* Desktop / tablet: HUD anchored to corner; children receive taps (slot is pass-through). */
+  .scene-hud-slot {
     position: absolute;
     right: clamp(18px, 4vw, 48px);
     bottom: clamp(18px, 4vw, 48px);
     width: clamp(232px, 28vw, 320px);
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .scene-hud-slot .scene-hud,
+  .scene-hud-slot .scene-hud-pull {
+    pointer-events: auto;
+  }
+
+  .scene-hud-pull,
+  .scene-hud-backdrop {
+    display: none;
+  }
+
+  .scene-hud-pull {
+    display: none;
+    position: absolute;
+    right: var(--space-sm);
+    bottom: clamp(80px, 26vh, 180px);
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    margin: 0;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 50%;
+    background: rgba(12, 12, 17, 0.72);
+    color: rgba(248, 248, 252, 0.92);
+    -webkit-backdrop-filter: saturate(155%) blur(18px);
+    backdrop-filter: saturate(155%) blur(18px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    touch-action: manipulation;
+    z-index: 6;
+  }
+
+  .scene-hud-pull:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-accent) 70%, white);
+    outline-offset: 2px;
+  }
+
+  .scene-hud-pull__icon {
+    grid-area: 1 / 1;
+  }
+
+  .scene-hud-pull__icon--close {
+    display: none;
+  }
+
+  .scene-hud-slot.is-open .scene-hud-pull__icon--sliders {
+    display: none;
+  }
+
+  .scene-hud-slot.is-open .scene-hud-pull__icon--close {
+    display: block;
+  }
+
+  .scene-hud-backdrop {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: rgba(4, 4, 8, 0.42);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.28s ease,
+      visibility 0.28s ease;
+    z-index: 3;
+  }
+
+  .scene-hud-slot.is-open .scene-hud-backdrop {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .scene-hud {
+    pointer-events: auto;
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 100%;
     padding: clamp(14px, 2vw, 18px);
     border-radius: var(--radius-md);
     border: 1px solid rgba(255, 255, 255, 0.12);
@@ -184,6 +307,144 @@
     font-size: 0.8125rem;
     display: grid;
     gap: 0.6rem;
+    z-index: 4;
+  }
+
+  @media (max-width: 920px) {
+    .scene-container {
+      container-type: size;
+    }
+
+    .scene-hud-slot {
+      inset: 0;
+      right: 0;
+      bottom: 0;
+      width: auto;
+      border-radius: inherit;
+    }
+
+    .scene-hud-pull,
+    .scene-hud-backdrop {
+      display: block;
+    }
+
+    .scene-hud-pull {
+      display: grid;
+    }
+
+    .scene-hud {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(300px, 88vw);
+      height: 100%;
+      max-height: 100%;
+      min-height: 0;
+      margin: 0;
+      border-radius: var(--radius-md) 0 0 var(--radius-md);
+      transform: translateX(100%);
+      transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1);
+      overflow-x: clip;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      pointer-events: none;
+      box-shadow: -12px 0 40px rgba(0, 0, 0, 0.35);
+      /* vmin fallback, then CQ height so type fits inside the sticky scene (~320–520px). */
+      font-size: clamp(0.62rem, 2.92vmin, 0.8125rem);
+      gap: clamp(0.35rem, 2vmin, 0.6rem);
+      padding: clamp(7px, 2.1vmin, 16px);
+      font-size: clamp(0.6rem, 5.85cqh, 0.8125rem);
+      gap: clamp(0.35rem, 3.25cqh, 0.6rem);
+      padding: clamp(7px, 3.85cqh, 16px);
+    }
+
+    .scene-hud-slot.is-open .scene-hud {
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .scene-hud .hud-rows {
+      gap: clamp(6px, 1.85vmin, var(--space-sm));
+      gap: clamp(6px, 3cqh, var(--space-sm));
+    }
+
+    .scene-hud .hud-slider {
+      gap: clamp(5px, 1.7vmin, 8px);
+      gap: clamp(5px, 2.65cqh, 8px);
+    }
+
+    .scene-hud .hud-slider-label {
+      font-size: clamp(0.65rem, 2.75vmin, 0.75rem);
+      font-size: clamp(0.62rem, 5.4cqh, 0.75rem);
+    }
+
+    .scene-hud .hud-caption {
+      font-size: clamp(0.6rem, 2.65vmin, 0.78125rem);
+      line-height: 1.32;
+      margin-block: clamp(3px, 1.65vmin, 8px);
+      font-size: clamp(0.58rem, 5.05cqh, 0.78125rem);
+      margin-block: clamp(3px, 1.75cqh, 8px);
+    }
+
+    .scene-hud .hud-row {
+      font-size: clamp(0.57rem, 2.62vmin, 0.6875rem);
+      gap: clamp(6px, 1.72vmin, var(--space-sm));
+      font-size: clamp(0.55rem, 4.95cqh, 0.6875rem);
+      gap: clamp(6px, 2.5cqh, var(--space-sm));
+    }
+
+    .scene-hud .hud-hint {
+      font-size: clamp(0.63rem, 2.68vmin, 0.7625rem);
+      font-size: clamp(0.6rem, 5.05cqh, 0.7625rem);
+    }
+
+    .scene-hud .hud-fps {
+      font-size: clamp(0.64rem, 2.7vmin, 0.78rem);
+      padding: 0.15rem clamp(0.4rem, 1.72vmin, 0.58rem) 0.12rem;
+      font-size: clamp(0.62rem, 5.05cqh, 0.78rem);
+      padding: 0.15rem clamp(0.35rem, 2cqh, 0.58rem) 0.12rem;
+    }
+
+    .scene-hud input[type='range'] {
+      height: clamp(2px, 0.7vmin, 3px);
+      height: clamp(2px, 0.72cqh, 3px);
+    }
+
+    .scene-hud input[type='range']::-webkit-slider-thumb {
+      width: clamp(10px, 3.4vmin, 13px);
+      height: clamp(10px, 3.4vmin, 13px);
+      width: clamp(10px, 3.85cqh, 13px);
+      height: clamp(10px, 3.85cqh, 13px);
+    }
+
+    .scene-hud input[type='range']::-moz-range-thumb {
+      width: clamp(10px, 3.4vmin, 13px);
+      height: clamp(10px, 3.4vmin, 13px);
+      width: clamp(10px, 3.85cqh, 13px);
+      height: clamp(10px, 3.85cqh, 13px);
+    }
+
+    .scene-hud .hud-slider--color input[type='color'] {
+      height: clamp(22px, 8.5vmin, 28px);
+      height: clamp(22px, 10cqh, 28px);
+    }
+
+    .scene-hud .pill {
+      font-size: clamp(0.55rem, 2.6vmin, 0.6875rem);
+      font-size: clamp(0.53rem, 4.95cqh, 0.6875rem);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scene-hud {
+        transition: none;
+      }
+
+      .scene-hud-backdrop {
+        transition: none;
+      }
+    }
   }
 
   @supports not ((backdrop-filter: blur(12px))) {
@@ -212,7 +473,7 @@
     gap: 8px;
   }
 
-  .hud-slider span {
+  .hud-slider-label {
     color: rgba(230, 230, 237, 0.78);
     font-size: 0.75rem;
   }
@@ -352,12 +613,80 @@
     pointer-events: none;
   }
 
-  @media (max-width: 540px) {
-    .scene-hud {
-      position: sticky;
-      width: calc(100% - 2 * var(--space-sm));
-      margin: var(--space-sm) auto 0;
+</style>
+
+<script>
+  const HUD_MOBILE_MQ = '(max-width: 920px)';
+  let sceneHudAbort: AbortController | null = null;
+
+  function initSceneHudDrawer(): void {
+    const hudSlotCandidate = document.querySelector('[data-scene-hud-slot]');
+    const hudToggleCandidate = document.querySelector('[data-scene-hud-toggle]');
+    const backdrop = document.querySelector('[data-scene-hud-backdrop]') as HTMLElement | null;
+
+    if (!(hudSlotCandidate instanceof HTMLElement) || !(hudToggleCandidate instanceof HTMLButtonElement)) {
+      return;
     }
+
+    const hudSlot = hudSlotCandidate;
+    const hudToggle = hudToggleCandidate;
+
+    sceneHudAbort?.abort();
+    sceneHudAbort = new AbortController();
+    const { signal } = sceneHudAbort;
+
+    const mq = window.matchMedia(HUD_MOBILE_MQ);
+
+    function setOpen(open: boolean): void {
+      if (!mq.matches) return;
+      hudSlot.classList.toggle('is-open', open);
+      hudToggle.setAttribute('aria-expanded', String(open));
+      hudToggle.setAttribute('aria-label', open ? 'Close material controls' : 'Open material controls');
+      backdrop?.setAttribute('aria-hidden', String(!open));
+    }
+
+    hudToggle.addEventListener(
+      'click',
+      () => {
+        if (!mq.matches) return;
+        setOpen(!hudSlot.classList.contains('is-open'));
+      },
+      { signal }
+    );
+
+    backdrop?.addEventListener('click', () => setOpen(false), { signal });
+
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        if (e.key !== 'Escape') return;
+        if (!mq.matches || !hudSlot.classList.contains('is-open')) return;
+        setOpen(false);
+        hudToggle.focus();
+      },
+      { signal }
+    );
+
+    mq.addEventListener(
+      'change',
+      () => {
+        if (!mq.matches) {
+          hudSlot.classList.remove('is-open');
+          hudToggle.setAttribute('aria-expanded', 'false');
+          hudToggle.setAttribute('aria-label', 'Open material controls');
+          backdrop?.setAttribute('aria-hidden', 'true');
+        }
+      },
+      { signal }
+    );
   }
 
-</style>
+  document.addEventListener('astro:page-load', () => {
+    initSceneHudDrawer();
+  });
+
+  if (document.querySelector('[data-scene-hud-slot]')) {
+    queueMicrotask(() => initSceneHudDrawer());
+  }
+</script>
+
