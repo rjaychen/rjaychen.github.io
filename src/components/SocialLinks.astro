@@ -56,10 +56,24 @@ const links = [
     object-fit: contain;
     opacity: 0.7;
     transition: opacity 0.15s ease;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) .social-link img {
+      filter: invert(1);
+    }
+
+    :root:not([data-theme='light']) :global(body.page-resume) .social-link img {
+      filter: none;
+    }
+  }
+
+  :root[data-theme='dark'] .social-link img {
     filter: invert(1);
   }
 
-  html.view-readable-root .social-link img {
+  /* Resume is always a light paper layout — keep icons dark in every theme */
+  :root[data-theme='dark'] :global(body.page-resume) .social-link img {
     filter: none;
   }
 

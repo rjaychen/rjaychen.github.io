@@ -13,7 +13,7 @@ import {
 } from '../data/resume';
 import { sitePath } from '../utils/paths';
 
-const pageTitle = `${identity.name}'s Space'`;
+const pageTitle = `${identity.name}'s Space`;
 ---
 
 <SiteLayout title={pageTitle}>
@@ -102,22 +102,33 @@ const pageTitle = `${identity.name}'s Space'`;
     font-size: 1.05rem;
     font-weight: 500;
     max-width: 36ch;
-    color: rgba(245, 245, 247, 0.92);
-  }
-
-  html.view-readable-root .hero__tagline {
-    color: var(--color-text-muted);
+    color: var(--color-text-primary);
   }
 
   .hero__intro {
     font-size: 1.02rem;
     max-width: 56ch;
     margin-bottom: var(--space-xl);
-    color: rgba(245, 245, 247, 0.88);
+    color: var(--color-text-primary);
   }
 
-  html.view-readable-root .hero__intro {
-    color: var(--color-text-primary);
+  /* Interactive + dark theme: light text over the 3D scene */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) body:not(.mode-readable) .hero__tagline {
+      color: rgba(245, 245, 247, 0.92);
+    }
+
+    :root:not([data-theme='light']) body:not(.mode-readable) .hero__intro {
+      color: rgba(245, 245, 247, 0.88);
+    }
+  }
+
+  :root[data-theme='dark'] body:not(.mode-readable) .hero__tagline {
+    color: rgba(245, 245, 247, 0.92);
+  }
+
+  :root[data-theme='dark'] body:not(.mode-readable) .hero__intro {
+    color: rgba(245, 245, 247, 0.88);
   }
 
   .hero__actions {
@@ -129,15 +140,30 @@ const pageTitle = `${identity.name}'s Space'`;
 
   .btn--duck {
     font: inherit;
+    color: var(--color-text-primary);
   }
 
-  body:not(.mode-readable) .btn--duck {
+  /* Glass duck control on dark interactive hero only */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) body:not(.mode-readable) .btn--duck {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.14);
+      color: rgba(245, 245, 247, 0.95);
+    }
+
+    :root:not([data-theme='light']) body:not(.mode-readable) .btn--duck:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+  }
+
+  :root[data-theme='dark'] body:not(.mode-readable) .btn--duck {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.14);
     color: rgba(245, 245, 247, 0.95);
   }
 
-  body:not(.mode-readable) .btn--duck:hover:not(:disabled) {
+  :root[data-theme='dark'] body:not(.mode-readable) .btn--duck:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.14);
     border-color: rgba(255, 255, 255, 0.22);
   }
