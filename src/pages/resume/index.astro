@@ -29,9 +29,14 @@ const title = `${identity.name} · Resume`;
         googleScholar={identity.googleScholar}
         class="resume-social no-print"
       />
-      <p class="print-hint no-print muted">
-        Print (Ctrl+P) uses a simplified layout — disable headers/footers in the print dialog for best results.
-      </p>
+      <div class="resume-actions no-print">
+        <a class="btn-download" href="/docs/rjchen-resume.pdf" download>
+          ↓ Download PDF (ATS-friendly)
+        </a>
+        <p class="print-hint muted">
+          Print (Ctrl+P) renders a plain, ATS-compliant layout. For the best machine-readable version, use the PDF instead.
+        </p>
+      </div>
     </header>
 
     <ResumeSections
@@ -87,6 +92,9 @@ const title = `${identity.name} · Resume`;
   html.view-readable-root .page-resume {
     background: #fbfbfd;
     color-scheme: light;
+    color: #1d1d1f;
+    --color-text-primary: #1d1d1f;
+    --color-text-muted: #6e6e73;
   }
 
   html.view-readable-root.page-resume,
@@ -100,5 +108,40 @@ const title = `${identity.name} · Resume`;
 
   .resume-social {
     margin-top: var(--space-sm);
+  }
+
+  .resume-actions {
+    margin-top: var(--space-lg);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    align-items: center;
+  }
+
+  .btn-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-panel-border);
+    background: var(--color-panel);
+    color: var(--color-text-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .btn-download:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+  }
+
+  .print-hint {
+    margin-top: 0;
+    max-width: 46ch;
+    font-size: 0.875rem;
   }
 </style>

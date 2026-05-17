@@ -56,6 +56,47 @@ a.primary-link:hover {
   border: 0;
 }
 
+/* Client navigations (astro:transitions) — subtle cross-page motion */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (view-transition-name: none) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 320ms;
+      animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    ::view-transition-old(root) {
+      animation-name: vt-fade-out-up;
+    }
+
+    ::view-transition-new(root) {
+      animation-name: vt-fade-in-up;
+    }
+
+    @keyframes vt-fade-out-up {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+    }
+
+    @keyframes vt-fade-in-up {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -67,5 +108,12 @@ a.primary-link:hover {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  @supports (view-transition-name: none) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation: none !important;
+    }
   }
 }

@@ -13,7 +13,7 @@ import {
 } from '../data/resume';
 import { sitePath } from '../utils/paths';
 
-const pageTitle = `${identity.name} · Portfolio`;
+const pageTitle = `${identity.name}'s Space'`;
 ---
 
 <SiteLayout title={pageTitle}>
@@ -181,9 +181,11 @@ const pageTitle = `${identity.name} · Portfolio`;
   }
 
   html.view-readable-root .btn--ghost {
-    background: #fff;
+    background: color-mix(in srgb, var(--color-text-primary) 6%, var(--color-bg-deep));
     border-color: var(--color-panel-border);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    box-shadow:
+      0 6px 20px color-mix(in srgb, var(--color-text-primary) 8%, transparent),
+      0 1px 0 color-mix(in srgb, var(--color-text-primary) 6%, transparent);
   }
 
   .view-toggle {
@@ -222,7 +224,7 @@ const pageTitle = `${identity.name} · Portfolio`;
 
   html.view-readable-root .view-toggle__btn.is-active {
     background: var(--color-text-primary);
-    color: #fff;
+    color: var(--color-bg-deep);
   }
 
   .readable-panel {
@@ -235,6 +237,18 @@ const pageTitle = `${identity.name} · Portfolio`;
     border-top-color: var(--color-panel-border);
   }
 
+  /*
+   * Section headings + intro sit on the normal page background (dark in dark theme).
+   * Paper surfaces live inside nested components — scoped CSS must use :global() to reach them.
+   */
+  html.view-readable-root .readable-panel :global(.edu-card),
+  html.view-readable-root .readable-panel :global(.timeline-card),
+  html.view-readable-root .readable-panel :global(.resume-section.grids .grid) {
+    color: #1d1d1f;
+    --color-text-primary: #1d1d1f;
+    --color-text-muted: #6e6e73;
+  }
+
   .readable-panel[hidden] {
     display: none !important;
   }
@@ -243,20 +257,17 @@ const pageTitle = `${identity.name} · Portfolio`;
 <script>
   import type { PortfolioMountApi } from '../scripts/scene/portfolioScene';
 
-  const STORAGE_KEY = 'rjaychen-site-mode';
+  /** Must match SiteLayout head boot (`portfolio-view-mode`). */
+  const STORAGE_KEY = 'portfolio-view-mode';
+  const LEGACY_STORAGE_KEY = 'rjaychen-site-mode';
   type Mode = 'interactive' | 'readable';
 
-  const layer = document.querySelector('[data-scene-layer]') as HTMLElement | null;
-  const root = document.querySelector('[data-portfolio-scene]') as HTMLElement | null;
-  const canvas = document.querySelector('#portfolio-canvas') as HTMLCanvasElement | null;
-  const btnI = document.getElementById('btn-interactive');
-  const btnR = document.getElementById('btn-readable');
-  const duckBtn = document.getElementById('btn-duck-toggle') as HTMLButtonElement | null;
-  const readablePanel = document.querySelector('[data-readable-panel]') as HTMLElement | null;
+  let homeUiAbort: AbortController | null = null;
 
   let api: PortfolioMountApi | null = null;
 
   function syncDuckButton(): void {
+    const duckBtn = document.getElementById('btn-duck-toggle') as HTMLButtonElement | null;
     if (!duckBtn) return;
     if (!api) {
       duckBtn.textContent = 'DUCK!';
@@ -270,19 +281,25 @@ const pageTitle = `${identity.name} · Portfolio`;
 
   function readPreference(): Mode {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const stored = localStorage.getItem(STORAGE_KEY) as Mode | null;
+    const stored =
+      (localStorage.getItem(STORAGE_KEY) as Mode | null) ??
+      (localStorage.getItem(LEGACY_STORAGE_KEY) as Mode | null);
     if (stored === 'interactive' || stored === 'readable') {
       return stored;
     }
     return mq.matches ? 'readable' : 'interactive';
   }
 
-  function setButtons(mode: Mode) {
-    btnI?.classList.toggle('is-active', mode === 'interactive');
-    btnR?.classList.toggle('is-active', mode === 'readable');
+  function setButtons(mode: Mode): void {
+    document.getElementById('btn-interactive')?.classList.toggle('is-active', mode === 'interactive');
+    document.getElementById('btn-readable')?.classList.toggle('is-active', mode === 'readable');
   }
 
-  function applyBodyMode(mode: Mode) {
+  function applyBodyMode(mode: Mode): void {
+    const layer = document.querySelector('[data-scene-layer]') as HTMLElement | null;
+    const readablePanel = document.querySelector('[data-readable-panel]') as HTMLElement | null;
+    const duckBtn = document.getElementById('btn-duck-toggle') as HTMLButtonElement | null;
+
     document.documentElement.classList.toggle('view-readable-root', mode === 'readable');
     document.body.classList.toggle('mode-readable', mode === 'readable');
     layer?.classList.toggle('scene-layer--hidden', mode === 'readable');
@@ -297,12 +314,14 @@ const pageTitle = `${identity.name} · Portfolio`;
     }
   }
 
-  function disposeScene() {
+  function disposeScene(): void {
     api?.dispose();
     api = null;
   }
 
   async function bootScene(): Promise<void> {
+    const canvas = document.querySelector('#portfolio-canvas') as HTMLCanvasElement | null;
+    const root = document.querySelector('[data-portfolio-scene]') as HTMLElement | null;
     if (!canvas || !root || api) return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const { mount } = await import('../scripts/scene/portfolioScene');
@@ -310,8 +329,11 @@ const pageTitle = `${identity.name} · Portfolio`;
     syncDuckButton();
   }
 
-  function setMode(mode: Mode) {
-    localStorage.setItem(STORAGE_KEY, mode);
+  function setMode(mode: Mode): void {
+    try {
+      localStorage.setItem(STORAGE_KEY, mode);
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
+    } catch {}
     setButtons(mode);
     applyBodyMode(mode);
     if (mode === 'interactive') {
@@ -329,12 +351,60 @@ const pageTitle = `${identity.name} · Portfolio`;
     }
   }
 
-  function init() {
+  function ensureHomeClickDelegation(): void {
+    homeUiAbort?.abort();
+    homeUiAbort = new AbortController();
+    const { signal } = homeUiAbort;
+
+    document.addEventListener(
+      'click',
+      (e) => {
+        const t = e.target as HTMLElement | null;
+        if (!t?.closest?.('.home')) return;
+
+        if (t.closest('#btn-interactive')) {
+          setMode('interactive');
+          return;
+        }
+        if (t.closest('#btn-readable')) {
+          setMode('readable');
+        }
+      },
+      { signal }
+    );
+
+    document.addEventListener(
+      'click',
+      async (e) => {
+        const duck = (e.target as HTMLElement)?.closest('#btn-duck-toggle') as HTMLButtonElement | null;
+        if (!duck || duck.hidden || !document.querySelector('.home')) return;
+        if (!api) return;
+        duck.disabled = true;
+        try {
+          const next = !api.getShowGlb();
+          await api.setShowGlb(next);
+        } catch {
+          /* Load failed — remains torus */
+        } finally {
+          duck.disabled = false;
+          syncDuckButton();
+        }
+      },
+      { signal }
+    );
+  }
+
+  function initHomePage(): void {
+    if (!document.querySelector('.home')) return;
+
+    ensureHomeClickDelegation();
+
     const mode = readPreference();
     setButtons(mode);
     applyBodyMode(mode);
     if (mode === 'interactive') {
       const start = (): void => {
+        disposeScene();
         void bootScene();
       };
       if ('requestIdleCallback' in window) {
@@ -342,25 +412,22 @@ const pageTitle = `${identity.name} · Portfolio`;
       } else {
         setTimeout(start, 0);
       }
+    } else {
+      disposeScene();
     }
   }
 
-  duckBtn?.addEventListener('click', async () => {
-    if (!api || duckBtn.hidden) return;
-    const next = !api.getShowGlb();
-    duckBtn.disabled = true;
-    try {
-      await api.setShowGlb(next);
-    } catch {
-      /* Load failed — remains torus */
-    } finally {
-      duckBtn.disabled = false;
-      syncDuckButton();
+  function onAstroPageLoad(): void {
+    if (!document.querySelector('.home')) {
+      disposeScene();
+      return;
     }
-  });
+    initHomePage();
+  }
 
-  btnI?.addEventListener('click', () => setMode('interactive'));
-  btnR?.addEventListener('click', () => setMode('readable'));
+  document.addEventListener('astro:page-load', onAstroPageLoad);
 
-  init();
+  if (document.querySelector('.home')) {
+    queueMicrotask(onAstroPageLoad);
+  }
 </script>

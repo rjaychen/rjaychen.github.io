@@ -1,19 +1,26 @@
 @media print {
-  /* --- Page setup --- */
+  /* ------------------------------------------------------------------ */
+  /* ATS-compliant print layout                                           */
+  /* Goal: plain, single-column, text-only output that machine parsers   */
+  /* can read reliably. All decorative chrome, images, and icons hidden. */
+  /* ------------------------------------------------------------------ */
+
   @page {
-    margin: 1.2cm 1.5cm;
+    margin: 1.8cm 2cm;
+    size: letter portrait;
   }
 
-  /* --- Force light / neutral base --- */
+  /* Force plain white/black base */
   html,
   body {
     background: #fff !important;
-    color: #111 !important;
+    color: #000 !important;
     color-scheme: light !important;
-    font-size: 10.5pt;
+    font-size: 11pt;
+    font-family: Georgia, 'Times New Roman', serif;
   }
 
-  /* --- Remove decorative chrome --- */
+  /* Hide all decorative / interactive chrome */
   .no-print,
   .site-nav,
   .site-footer,
@@ -21,143 +28,184 @@
   .scene-layer,
   .hero__actions,
   .view-toggle,
-  .resume-social {
+  .resume-social,
+  .resume-actions,
+  .eyebrow,
+
+  /* Org/institution logo images */
+  .edu-card__brand,
+  .org-logo-frame,
+  .org-logo-img,
+
+  /* Skill icon rows */
+  .tool-row img,
+  .chips--icons img,
+  .skill-icon,
+  [class*="skill-icon"] {
     display: none !important;
   }
 
-  /* --- Strip gradients and blurs --- */
+  /* Strip every decoration */
   *,
   *::before,
   *::after {
+    background: #fff !important;
     background-image: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     box-shadow: none !important;
     text-shadow: none !important;
+    border-radius: 0 !important;
+    color: #000 !important;
   }
 
-  /* --- Force opaque backgrounds --- */
+  /* Full-width single-column layout */
   body,
   main,
   .readable-flow,
   .u-container {
-    background: #fff !important;
     max-width: 100% !important;
+    width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
   }
 
-  /* --- Typography and layout --- */
-  h1 { font-size: 20pt; margin-bottom: 4pt; }
-  h2 { font-size: 12pt; margin-top: 14pt; margin-bottom: 4pt; }
-  h3 { font-size: 10.5pt; margin: 0 0 2pt; }
+  /* ------------------------------------------------------------------
+     Typography — clear hierarchy without decorative weight            */
+  h1 {
+    font-size: 20pt;
+    margin: 0 0 4pt;
+    font-weight: bold;
+  }
 
-  p, li { font-size: 10pt; line-height: 1.5; }
+  h2 {
+    font-size: 13pt;
+    margin: 14pt 0 3pt;
+    font-weight: bold;
+    border-bottom: 1px solid #000;
+    padding-bottom: 2pt;
+  }
+
+  h3 {
+    font-size: 11pt;
+    margin: 0 0 2pt;
+    font-weight: bold;
+  }
+
+  p, li {
+    font-size: 10.5pt;
+    line-height: 1.5;
+    margin: 0 0 3pt;
+  }
 
   a {
-    color: #111 !important;
+    color: #000 !important;
     text-decoration: none !important;
   }
 
-  /* --- Education and experience cards --- */
-  .edu-card,
-  .timeline-card {
-    border: 1px solid #d0d0d4 !important;
-    border-radius: 6px !important;
-    padding: 8pt 10pt !important;
+  /* ------------------------------------------------------------------
+     Resume hero                                                       */
+  .resume-hero {
+    padding: 0 0 6pt !important;
+    border-bottom: 1.5pt solid #000 !important;
     margin-bottom: 6pt !important;
-    background: #fff !important;
-    /* Allow individual cards to break across pages, but prefer not to */
-    break-inside: avoid;
-    page-break-inside: avoid;
+  }
+
+  .lede {
+    font-size: 11pt !important;
+  }
+
+  /* ------------------------------------------------------------------
+     Education cards — plain rows                                      */
+  .edu-card {
+    display: block !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: 6pt !important;
+  }
+
+  .edu-institution {
+    font-style: italic;
+  }
+
+  .edu-range {
+    font-size: 9.5pt !important;
+  }
+
+  /* ------------------------------------------------------------------
+     Timeline / experience                                             */
+  .timeline-card {
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: 8pt !important;
   }
 
   .stack {
     gap: 6pt !important;
   }
 
-  /* --- Chips --- */
-  .chips {
-    gap: 6px !important;
-  }
-
-  .chips li {
-    border: 1px solid #ccc !important;
-    background: #f5f5f7 !important;
-    padding: 2pt 6pt !important;
-    font-size: 9pt !important;
-    border-radius: 999px !important;
-    color: #333 !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  /* --- Tool icon rows --- */
+  /* ------------------------------------------------------------------
+     Skills — strip chip badges, render as plain comma-joined text    */
+  .chips,
   .tool-row {
-    gap: 5px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0 !important;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
+  .chips li,
   .tool-row li {
-    border: 1px solid #ccc !important;
-    background: #f9f9fb !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+    border: none !important;
+    background: none !important;
+    padding: 0 !important;
+    font-size: 10pt !important;
+    border-radius: 0 !important;
+    color: #000 !important;
   }
 
-  /* Ensure icon images render in print */
-  .tool-row img,
-  .chips--icons img {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+  /* Separate chip items with commas */
+  .chips li::after,
+  .tool-row li::after {
+    content: ', ';
   }
 
-  .org-logo-frame {
-    border: 1px solid #ccc !important;
-    background: #fff !important;
-    border-radius: 8px !important;
-    padding: 4pt !important;
-    box-sizing: border-box !important;
-    display: grid !important;
-    place-items: center !important;
+  .chips li:last-child::after,
+  .tool-row li:last-child::after {
+    content: '';
   }
 
-  .org-logo-frame img {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  /* --- Section headings --- */
+  /* ------------------------------------------------------------------
+     Sections                                                          */
   .resume-section {
-    margin-top: 10pt !important;
+    margin-top: 8pt !important;
   }
 
-  /* Don't force page breaks on every section */
   section {
     break-inside: auto;
     page-break-inside: auto;
   }
 
-  /* --- Muted text --- */
+  .edu-card,
+  .timeline-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* ------------------------------------------------------------------
+     Muted / meta text                                                 */
   .muted,
+  .muted-long,
   .meta,
   .edu-range,
   .edu-institution {
-    color: #555 !important;
-  }
-
-  /* --- Hero / header area --- */
-  .resume-hero {
-    padding: 0 0 8pt !important;
-    border-bottom: 1px solid #ddd !important;
-    margin-bottom: 8pt !important;
-  }
-
-  .eyebrow {
-    display: none;
-  }
-
-  .lede {
-    font-size: 11pt !important;
     color: #333 !important;
+  }
+
+  /* Suppress anything still image-shaped */
+  img, svg {
+    display: none !important;
   }
 }

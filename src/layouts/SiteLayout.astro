@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import { identity } from '../data/resume';
 import { sitePath } from '../utils/paths';
 import SocialLinks from '../components/SocialLinks.astro';
@@ -14,6 +15,12 @@ interface Props {
 const { title = identity.name, description = identity.summary, bodyClass = '', htmlClass } = Astro.props;
 
 const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.url;
+
+const iconBase = `${import.meta.env.BASE_URL}icons/site/`.replace(/([^:])\/\/+/g, '$1/');
+const faviconIco = `${iconBase}favicon.ico`;
+const appleTouchIcon = `${iconBase}apple-touch-icon.png`;
+const androidChrome192 = `${iconBase}android-chrome-192x192.png`;
+const androidChrome512 = `${iconBase}android-chrome-512x512.png`;
 ---
 
 <!DOCTYPE html>
@@ -23,6 +30,11 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <!-- Favicon & app icons (public/icons/site/) -->
+    <link rel="icon" href={faviconIco} sizes="any" />
+    <link rel="apple-touch-icon" href={appleTouchIcon} />
+    <link rel="icon" type="image/png" sizes="192x192" href={androidChrome192} />
+    <link rel="icon" type="image/png" sizes="512x512" href={androidChrome512} />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL.toString()} />
     <slot name="head" />
@@ -40,8 +52,18 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
 
     <meta name="theme-color" content="#0a0a0c" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)" />
+    <ClientRouter />
     <script is:inline>
       (function () {
+        // Apply stored theme override before first paint to avoid flash
+        try {
+          var t = localStorage.getItem('portfolio-theme');
+          if (t === 'light' || t === 'dark') {
+            document.documentElement.setAttribute('data-theme', t);
+          }
+        } catch (e) {}
+
+        // Readable layout mode
         try {
           var k = 'portfolio-view-mode';
           var s = localStorage.getItem(k);
@@ -52,6 +74,7 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
             document.documentElement.classList.add('view-readable-root');
           }
         } catch (e) {}
+
         // Restore accent color before first paint to avoid flash of default blue
         try {
           var accent = localStorage.getItem('portfolio-accent-color');
@@ -86,6 +109,30 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
             aria-current={Astro.url.pathname.startsWith(sitePath('resume')) ? 'page' : undefined}
             >Resume</a
           >
+          <button
+            id="theme-toggle"
+            type="button"
+            class="theme-toggle no-print"
+            aria-label="Toggle color theme"
+            title="Toggle light / dark / auto"
+          >
+            <!-- Sun icon (light mode indicator) -->
+            <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+            <!-- Moon icon (dark mode indicator) -->
+            <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+            </svg>
+          </button>
         </nav>
       </div>
     </header>
@@ -177,8 +224,152 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
     line-height: 1.5;
   }
 
-  html.view-readable-root .site-nav {
+  html[data-theme='light'] .site-nav {
     border-bottom-color: rgba(17, 17, 20, 0.08);
     background: rgba(245, 245, 247, 0.85);
   }
+
+  @media (prefers-color-scheme: light) {
+    html:not([data-theme='dark']) .site-nav {
+      border-bottom-color: rgba(17, 17, 20, 0.08);
+      background: rgba(245, 245, 247, 0.85);
+    }
+  }
+
+  /*
+   * Resume keeps a light paper body even under dark chrome; translucent nav + backdrop
+   * would otherwise blend with that paper and look lighter than other dark-mode pages.
+   */
+  html[data-theme='dark'] body.page-resume .site-nav {
+    border-bottom-color: var(--color-panel-border);
+    background: color-mix(in srgb, var(--color-bg-deep) 94%, transparent);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) body.page-resume .site-nav {
+      border-bottom-color: var(--color-panel-border);
+      background: color-mix(in srgb, var(--color-bg-deep) 94%, transparent);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  /* ---- Theme toggle button ---- */
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid var(--color-panel-border);
+    border-radius: 50%;
+    background: var(--color-panel);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle:hover {
+    color: var(--color-text-primary);
+    background: var(--color-panel-border);
+  }
+
+  /* Show sun in dark mode, moon in light mode */
+  .icon-sun  { display: none; }
+  .icon-moon { display: block; }
+
+  html[data-theme='light'] .icon-sun,
+  html[data-theme='light'] ~ * .icon-sun { display: block; }
+  html[data-theme='light'] .icon-moon,
+  html[data-theme='light'] ~ * .icon-moon { display: none; }
+
+  @media (prefers-color-scheme: light) {
+    html:not([data-theme='dark']) .icon-sun  { display: block; }
+    html:not([data-theme='dark']) .icon-moon { display: none; }
+  }
 </style>
+
+<script>
+  import { applyAccent, loadStoredAccent } from '../scripts/scene/accentTheme';
+
+  const THEME_STORAGE_KEY = 'portfolio-theme';
+  const root = document.documentElement;
+  let mqListener: (() => void) | null = null;
+
+  function getEffectiveTheme(): 'light' | 'dark' {
+    const stored = root.getAttribute('data-theme') as 'light' | 'dark' | null;
+    if (stored === 'light' || stored === 'dark') return stored;
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  }
+
+  /** View transitions swap `<html>` without inline boot script — restore explicit theme choice. */
+  function applyStoredTheme(): void {
+    try {
+      const t = localStorage.getItem(THEME_STORAGE_KEY);
+      if (t === 'light' || t === 'dark') {
+        root.setAttribute('data-theme', t);
+      } else {
+        root.removeAttribute('data-theme');
+      }
+    } catch {}
+  }
+
+  /** Align HUD color pickers + CSS accent with storage after swapped markup resets inputs. */
+  function applyStoredAccent(): void {
+    const hex = loadStoredAccent();
+    applyAccent(hex);
+    for (const el of document.querySelectorAll('[data-scene-accent]')) {
+      if (el instanceof HTMLInputElement) el.value = hex;
+    }
+  }
+
+  function restorePersistedChrome(): void {
+    applyStoredTheme();
+    applyStoredAccent();
+  }
+
+  function bindThemeToggle(): void {
+    restorePersistedChrome();
+
+    const existing = document.getElementById('theme-toggle');
+    if (!existing) return;
+    existing.replaceWith(existing.cloneNode(true));
+    const btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+
+    const updateIcons = (): void => {
+      const effective = getEffectiveTheme();
+      const sun = btn.querySelector('.icon-sun') as HTMLElement | null;
+      const moon = btn.querySelector('.icon-moon') as HTMLElement | null;
+      if (sun) sun.style.display = effective === 'light' ? 'block' : 'none';
+      if (moon) moon.style.display = effective === 'dark' ? 'block' : 'none';
+    };
+
+    const onClick = (): void => {
+      const current = getEffectiveTheme();
+      const next = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try {
+        localStorage.setItem(THEME_STORAGE_KEY, next);
+      } catch {}
+      updateIcons();
+    };
+
+    btn.addEventListener('click', onClick);
+
+    if (mqListener) {
+      window.matchMedia('(prefers-color-scheme: light)').removeEventListener('change', mqListener);
+    }
+    mqListener = () => updateIcons();
+    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', mqListener);
+    updateIcons();
+  }
+
+  bindThemeToggle();
+  document.addEventListener('astro:after-swap', restorePersistedChrome);
+  document.addEventListener('astro:page-load', bindThemeToggle);
+</script>

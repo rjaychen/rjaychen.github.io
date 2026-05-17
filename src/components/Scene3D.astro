@@ -4,31 +4,49 @@
 <div data-scene-layer class="scene-layer">
   <div class="scene-viewport-mask">
     <div class="scene-container" id="scene-container-root" data-portfolio-scene>
-      <canvas id="portfolio-canvas" aria-label="Interactive 3D preview — drag to orbit. Toggle DUCK! for portfolio.glb or the procedural torus."></canvas>
+      <canvas id="portfolio-canvas" aria-label="Interactive 3D preview — drag to orbit. Toggle DUCK! for <>.glb or the procedural torus."></canvas>
 
       <div class="scene-hud" aria-label="Realtime material controls" id="scene-controls">
-        <div class="hud-row hud-row--muted">
+        <div class="hud-row hud-row--muted hud-row--split">
           <span class="pill">Realtime</span>
-          <small class="muted">Drag to orbit · pinch-friendly canvas</small>
+          <div class="hud-metrics">
+            <small class="muted hud-hint">Drag to orbit · pinch-friendly canvas</small>
+            <div class="hud-fps" role="status" aria-live="polite" aria-atomic="true">
+              <span data-scene-fps>—</span>
+              <span class="hud-fps-unit">fps</span>
+            </div>
+          </div>
         </div>
         <div class="hud-rows">
           <label class="hud-slider">
             <span>Metalness</span>
-            <input type="range" min="0" max="1" step="0.02" value="0.72" data-scene-slider="metalness" />
+            <input type="range" min="0" max="1" step="0.02" value="0.28" data-scene-slider="metalness" />
           </label>
           <label class="hud-slider">
             <span>Roughness</span>
-            <input type="range" min="0" max="1" step="0.02" value="0.28" data-scene-slider="roughness" />
+            <input type="range" min="0" max="1" step="0.02" value="0.74" data-scene-slider="roughness" />
+          </label>
+          <label class="hud-slider">
+            <span>Morph points <output class="hud-value-tag" data-scene-particles-value for="portfolio-scene-particles">12,000</output></span>
+            <input
+              id="portfolio-scene-particles"
+              type="range"
+              min="500"
+              max="30000"
+              step="500"
+              value="12000"
+              data-scene-slider="particles"
+            />
           </label>
           <label class="hud-slider hud-slider--procedural-only">
             <span>Vertex rhythm</span>
-            <input type="range" min="0.1" max="3" step="0.05" value="1" data-scene-slider="warp" />
+            <input type="range" min="0" max="1" step="0.02" value="0.5" data-scene-slider="warp" />
           </label>
           <label class="hud-slider hud-slider--color">
             <span>Accent color</span>
             <input type="color" value="#0071e3" data-scene-accent />
           </label>
-          <small class="hud-caption">All sliders work on both the procedural mesh and imported GLBs.</small>
+          <small class="hud-caption">Sliders apply to the procedural mesh and imported GLBs. Morph points control the torus ↔ Duck particle dissolve.</small>
         </div>
       </div>
     </div>
@@ -203,6 +221,63 @@
     line-height: 1.55;
     color: rgba(255, 255, 255, 0.72);
     font-size: 0.78125rem;
+  }
+
+  .hud-row--split {
+    align-items: flex-start;
+  }
+
+  .hud-metrics {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    text-align: right;
+    min-width: 0;
+    text-transform: none;
+  }
+
+  .hud-hint {
+    max-width: 12.5rem;
+    line-height: 1.35;
+  }
+
+  .hud-fps {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
+    padding: 0.22rem 0.58rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.045);
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+  }
+
+  .hud-fps [data-scene-fps] {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: rgba(248, 248, 252, 0.96);
+    min-width: 2.25ch;
+    text-align: right;
+  }
+
+  .hud-fps [data-scene-fps][data-low='true'] {
+    color: rgba(255, 186, 138, 0.96);
+  }
+
+  .hud-fps-unit {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.72;
+  }
+
+  .hud-value-tag {
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    margin-inline-start: 0.35rem;
+    opacity: 0.88;
   }
 
   .pill {
