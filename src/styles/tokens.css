@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap');
 :root {
   color-scheme: dark;
   --color-bg-deep: #0a0a0c;
@@ -10,6 +11,7 @@
   --color-accent-soft: rgba(0, 113, 227, 0.35);
 
   --font-sans:
+    'Hanken Grotesk',
     ui-sans-serif, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial,
     sans-serif;
 

@@ -46,7 +46,7 @@ const xpHeading = compact ? 'Selected roles' : 'Experience';
                   alt={entry.logoAlt ?? ''}
                   width="48"
                   height="48"
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                 />
               </span>
@@ -60,7 +60,6 @@ const xpHeading = compact ? 'Selected roles' : 'Experience';
 
 <ExperienceTimeline heading={xpHeading} items={experience} />
 <SkillsGrid technicalSkills={technicalSkills} softSkills={softSkills} languages={languagesSpoken} />
-
 {
   !compact && (
     <section class="resume-section vibes">
