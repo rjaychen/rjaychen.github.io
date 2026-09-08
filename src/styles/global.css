@@ -39,7 +39,13 @@ a.primary-link:hover {
 }
 
 .u-container {
-  width: min(1100px, 100%);
+  width: min(var(--layout-max), 100%);
+  margin-inline: auto;
+  padding-inline: var(--space-md);
+}
+
+.u-container--wide {
+  width: min(var(--layout-wide), 100%);
   margin-inline: auto;
   padding-inline: var(--space-md);
 }

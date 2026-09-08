@@ -12,6 +12,16 @@ import {
   interests,
 } from '../data/resume';
 import { sitePath } from '../utils/paths';
+import BlogCard from '../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+function dateSortKey(post: { data: { date: string } }): number {
+  return Date.parse(post.data.date);
+}
+
+const posts = (await getCollection('blog')).filter((p) => !p.data.draft);
+posts.sort((a, b) => dateSortKey(b) - dateSortKey(a));
+const showcasePosts = posts.slice(0, 3);
 
 const pageTitle = `${identity.name}'s Space`;
 ---
@@ -48,6 +58,42 @@ const pageTitle = `${identity.name}'s Space`;
         </div>
       </section>
 
+      <section class="interactive-showcase" data-interactive-showcase>
+        <div class="showcase__header">
+          <div>
+            <div class="showcase__eyebrow">
+              <span class="showcase__indicator"></span>
+              <span>DEVPOSTS & LAB NOTES</span>
+            </div>
+            <h2 class="showcase__title">Featured Research & Engineering</h2>
+          </div>
+          <a class="showcase__link" href={sitePath('blog')}>
+            All Posts [{String(posts.length).padStart(2, '0')}]
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+
+        <div class="showcase__grid">
+          {showcasePosts.map((post, idx) => (
+            <BlogCard post={post} index={idx} />
+          ))}
+        </div>
+      </section>
+
       <section class="readable-panel" data-readable-panel hidden>
         <ResumeSections
           summary={identity.summary}
@@ -74,7 +120,7 @@ const pageTitle = `${identity.name}'s Space`;
   .home__content {
     position: relative;
     z-index: var(--z-content);
-    max-width: var(--layout-max);
+    max-width: var(--layout-wide);
     margin: 0 auto;
     padding: var(--space-2xl) var(--space-lg) var(--space-2xl);
     pointer-events: none;
@@ -278,6 +324,109 @@ const pageTitle = `${identity.name}'s Space`;
   .readable-panel[hidden] {
     display: none !important;
   }
+
+  /* Interactive Blog Showcase */
+  .interactive-showcase {
+    margin-top: calc(var(--space-2xl) * 1.25);
+    pointer-events: auto;
+  }
+
+  .interactive-showcase[hidden] {
+    display: none !important;
+  }
+
+  .showcase__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .showcase__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-accent);
+    margin-bottom: var(--space-xs);
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(0, 113, 227, 0.08);
+    border: 1px solid var(--color-accent-soft);
+  }
+
+  .showcase__indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 8px var(--color-accent);
+  }
+
+  .showcase__title {
+    font-size: clamp(1.75rem, 3.2vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin: 0;
+    color: var(--color-text-primary);
+  }
+
+  .showcase__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    background: var(--glass-card-bg);
+    border: 1px solid var(--glass-card-border);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    transition:
+      border-color 0.25s ease,
+      color 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .showcase__link:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    transform: translateX(3px);
+  }
+
+  .showcase__grid {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 680px) {
+    .showcase__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-lg);
+    }
+  }
+
+  @media (min-width: 1120px) {
+    .showcase__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-xl);
+    }
+  }
+
+  @media (min-width: 1700px) {
+    .showcase__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: calc(var(--space-xl) * 1.2);
+    }
+  }
 </style>
 
 <script>
@@ -324,6 +473,7 @@ const pageTitle = `${identity.name}'s Space`;
   function applyBodyMode(mode: Mode): void {
     const layer = document.querySelector('[data-scene-layer]') as HTMLElement | null;
     const readablePanel = document.querySelector('[data-readable-panel]') as HTMLElement | null;
+    const interactiveShowcase = document.querySelector('[data-interactive-showcase]') as HTMLElement | null;
     const duckBtn = document.getElementById('btn-duck-toggle') as HTMLButtonElement | null;
 
     document.documentElement.classList.toggle('view-readable-root', mode === 'readable');
@@ -331,6 +481,9 @@ const pageTitle = `${identity.name}'s Space`;
     layer?.classList.toggle('scene-layer--hidden', mode === 'readable');
     if (readablePanel) {
       readablePanel.hidden = mode !== 'readable';
+    }
+    if (interactiveShowcase) {
+      interactiveShowcase.hidden = mode === 'readable';
     }
     if (layer) {
       layer.setAttribute('aria-hidden', mode === 'readable' ? 'true' : 'false');

@@ -16,106 +16,264 @@ const { Content } = await render(post);
 
 const title = `${post.data.title} · Blog`;
 const when = new Date(post.data.date);
+
+let heroImage = post.data.image || post.data.optimized_image;
+if (!heroImage) {
+  if (post.id.includes('khepri')) {
+    heroImage = '/img/mpm-lite-banner.jpg';
+  } else if (post.id.includes('diminished')) {
+    heroImage = '/img/ug_thesis/dr_pipeline_poster.png';
+  } else if (post.id.includes('matrix')) {
+    heroImage = '/img/template_matrix.png';
+  }
+}
 ---
 
 <SiteLayout title={title} description={post.data.description ?? ''}>
   <article class="post">
     <header class="post__header">
-      <p class="post__meta">
-        <time datetime={when.toISOString()}>
+      <div class="post__nav-top">
+        <a href={sitePath('blog')} class="back-link">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          All posts
+        </a>
+        <span class="post__meta-dot">/</span>
+        <time datetime={when.toISOString()} class="post__date">
           {when.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
         </time>
-      </p>
-      <h1>{post.data.title}</h1>
+      </div>
+
+      <h1 class="post__title">{post.data.title}</h1>
       {post.data.description && <p class="post__deck">{post.data.description}</p>}
+
+      {
+        heroImage && (
+          <div class="post__hero-media">
+            <img src={heroImage} alt={post.data.title} class="post__hero-img" />
+          </div>
+        )
+      }
     </header>
+
     <div class="post__body prose">
       <Content />
     </div>
-    <p class="post__back">
-      <a href={sitePath('blog')}>← All posts</a>
-    </p>
+
+    <footer class="post__footer">
+      <a href={sitePath('blog')} class="btn-back">
+        ← Back to all posts
+      </a>
+    </footer>
   </article>
 </SiteLayout>
 
 <style>
   .post {
-    max-width: var(--layout-max);
+    width: min(var(--layout-wide), 100%);
     margin: 0 auto;
-    padding: var(--space-2xl) var(--space-lg) var(--space-2xl);
+    padding: var(--space-2xl) var(--space-lg) calc(var(--space-2xl) * 1.5);
   }
 
   .post__header {
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+    max-width: 90ch;
   }
 
-  .post__meta {
-    font-size: 0.9rem;
+  .post__nav-top {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 0.875rem;
+    margin-bottom: var(--space-md);
     color: var(--color-text-muted);
-    margin: 0 0 var(--space-sm);
   }
 
-  html.view-readable-root .post__meta {
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
     color: var(--color-text-muted);
+    transition: color 0.2s ease;
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
+  }
+
+  .post__meta-dot {
+    opacity: 0.4;
+  }
+
+  .post__date {
+    font-weight: 500;
+  }
+
+  .post__title {
+    font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+    font-weight: 750;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-md);
   }
 
   .post__deck {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    line-height: 1.6;
     color: var(--color-text-muted);
-    max-width: 55ch;
+    max-width: 65ch;
+    margin: 0 0 var(--space-xl);
   }
 
-  html.view-readable-root .post__deck {
-    color: var(--color-text-muted);
+  .post__hero-media {
+    width: 100%;
+    max-height: 520px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--glass-card-border);
+    background: var(--color-bg-muted);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    margin-top: var(--space-lg);
   }
 
+  .post__hero-img {
+    width: 100%;
+    height: 100%;
+    max-height: 520px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Body Typography & Layout */
+  .post__body {
+    max-width: 100%;
+  }
+
+  .post__body :global(h1),
   .post__body :global(h2) {
+    font-size: clamp(1.6rem, 2.5vw, 2.1rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
     margin-top: var(--space-2xl);
+    margin-bottom: var(--space-md);
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--glass-card-border);
+    padding-bottom: var(--space-xs);
   }
 
   .post__body :global(h3) {
+    font-size: 1.35rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
     margin-top: var(--space-xl);
-  }
-
-  .post__body :global(pre) {
-    padding: var(--space-md);
-    border-radius: var(--radius-md);
-    overflow-x: auto;
-    border: 1px solid var(--color-panel-border);
-    font-size: 0.9375rem;
-  }
-
-  .post__body :global(code) {
-    font-size: 0.92em;
+    margin-bottom: var(--space-sm);
+    color: var(--color-text-primary);
   }
 
   .post__body :global(p),
   .post__body :global(li) {
     max-width: var(--content-max);
-    line-height: 1.7;
+    line-height: 1.75;
+    font-size: 1.05rem;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-md);
   }
 
-  .post__back {
-    margin-top: var(--space-2xl);
+  .post__body :global(blockquote) {
+    margin: var(--space-lg) 0;
+    padding: var(--space-md) var(--space-lg);
+    border-left: 3px solid var(--color-accent);
+    background: var(--glass-card-bg);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    max-width: var(--content-max);
+    color: var(--color-text-primary);
+    font-style: italic;
+  }
+
+  .post__body :global(pre) {
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    border: 1px solid var(--glass-card-border);
+    background: #0d1117 !important;
     font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: min(1100px, 100%);
+    margin: var(--space-xl) 0;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
   }
 
-  /* Normalize all inline images */
+  .post__body :global(code) {
+    font-size: 0.92em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  /* Inline Images */
   .post__body :global(img) {
     display: block;
-    max-width: 100%;
+    max-width: min(1200px, 100%);
     height: auto;
-    margin: var(--space-lg) auto;
+    margin: var(--space-xl) 0;
     border-radius: var(--radius-md);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+    border: 1px solid var(--glass-card-border);
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.35);
   }
 
-  /* iframes (YouTube embeds etc.) */
+  /* Video iframes */
   .post__body :global(iframe) {
     display: block;
-    max-width: 100%;
-    margin: var(--space-lg) auto;
+    width: 100%;
+    max-width: min(1200px, 100%);
+    aspect-ratio: 16 / 9;
+    height: auto;
+    min-height: 380px;
+    margin: var(--space-xl) 0;
     border-radius: var(--radius-md);
-    border: 1px solid var(--color-panel-border);
+    border: 1px solid var(--glass-card-border);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  }
+
+  .post__footer {
+    margin-top: calc(var(--space-2xl) * 1.5);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--glass-card-border);
+  }
+
+  .btn-back {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.65rem 1.35rem;
+    border-radius: 999px;
+    background: var(--glass-card-bg);
+    border: 1px solid var(--glass-card-border);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.925rem;
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .btn-back:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    transform: translateX(-3px);
   }
 </style>

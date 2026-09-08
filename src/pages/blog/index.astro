@@ -1,5 +1,6 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
 import { getCollection } from 'astro:content';
 
 function dateSortKey(post: { data: { date: string } }): number {
@@ -10,99 +11,130 @@ const posts = (await getCollection('blog')).filter((p) => !p.data.draft);
 posts.sort((a, b) => dateSortKey(b) - dateSortKey(a));
 
 const title = 'Blog · Ryan J. Chen';
-
-const prefix = import.meta.env.BASE_URL;
 ---
 
-<SiteLayout title={title} description="Writing on graphics, XR, and engineering.">
-  <div class="blog-index">
-    <h1>Blog</h1>
-    <p class="lede">Technical notes and occasional longer-form pieces.</p>
-    <div class="card-grid card-grid--2">
+<SiteLayout title={title} description="Engineering devlogs, graphics research, and technical explorations.">
+  <div class="blog-container">
+    <header class="blog-header">
+      <div class="blog-header__eyebrow">
+        <span class="pulse-dot"></span>
+        <span class="eyebrow-text">RESEARCH & DEVLOGS</span>
+        <span class="eyebrow-count">[{String(posts.length).padStart(2, '0')}]</span>
+      </div>
+      <h1 class="blog-header__title">Writing & Engineering Notes</h1>
+      <p class="blog-header__lede">
+        Deep dives into real-time rendering, Vulkan systems, spatial computing, and computational physics.
+      </p>
+    </header>
+
+    <div class="blog-grid">
       {
-        posts.map((post) => {
-          const d = new Date(post.data.date);
-          return (
-            <a class="blog-card" href={`${prefix}blog/${post.id}/`}>
-              <h2>{post.data.title}</h2>
-              <p class="meta">
-                {d.toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                })}
-                {post.data.description ? ` · ${post.data.description}` : ''}
-              </p>
-            </a>
-          );
-        })
+        posts.map((post, index) => (
+          <BlogCard post={post} index={index} />
+        ))
       }
     </div>
   </div>
 </SiteLayout>
 
 <style>
-  .blog-index {
-    max-width: var(--layout-max);
+  .blog-container {
+    width: min(var(--layout-wide), 100%);
     margin: 0 auto;
-    padding: var(--space-2xl) var(--space-lg);
+    padding: var(--space-2xl) var(--space-lg) calc(var(--space-2xl) * 1.5);
   }
 
-  .blog-index h1 {
+  .blog-header {
+    margin-bottom: var(--space-2xl);
+    max-width: 80ch;
+  }
+
+  .blog-header__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-accent);
     margin-bottom: var(--space-sm);
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(0, 113, 227, 0.08);
+    border: 1px solid var(--color-accent-soft);
   }
 
-  .lede {
-    margin: 0 0 var(--space-xl);
-    color: var(--color-text-muted);
-    max-width: 50ch;
+  .pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 8px var(--color-accent);
+    animation: pulse 2s infinite ease-in-out;
   }
 
-  html.view-readable-root .lede {
-    color: var(--color-text-muted);
-  }
-
-  .card-grid {
-    display: grid;
-    gap: var(--space-lg);
-  }
-
-  @media (min-width: 640px) {
-    .card-grid--2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.4;
+      transform: scale(0.9);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
     }
   }
 
-  .blog-card {
-    display: block;
-    padding: var(--space-lg);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--color-panel-border);
-    background: var(--color-panel);
-    text-decoration: none;
-    color: inherit;
-    box-shadow: var(--shadow-soft);
-    transition: border-color 0.2s ease;
+  .eyebrow-text {
+    text-transform: uppercase;
   }
 
-  html.view-readable-root .blog-card {
-    background: rgba(255, 255, 255, 0.92);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+  .eyebrow-count {
+    font-family: ui-monospace, monospace;
+    opacity: 0.75;
   }
 
-  .blog-card:hover {
-    border-color: var(--color-accent-soft);
+  .blog-header__title {
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    margin: 0 0 var(--space-md);
+    color: var(--color-text-primary);
   }
 
-  .blog-card h2 {
-    margin: 0 0 var(--space-sm);
+  .blog-header__lede {
     font-size: 1.15rem;
-    letter-spacing: -0.02em;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    margin: 0;
+    max-width: 65ch;
   }
 
-  .blog-card .meta {
-    margin: 0;
-    font-size: 0.875rem;
-    color: var(--color-text-muted);
+  /* Responsive Grid: stretches across wide screens */
+  .blog-grid {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 680px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-lg);
+    }
+  }
+
+  @media (min-width: 1120px) {
+    .blog-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-xl);
+    }
+  }
+
+  @media (min-width: 1700px) {
+    .blog-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: calc(var(--space-xl) * 1.25);
+    }
   }
 </style>

@@ -28,12 +28,19 @@
 
   --shadow-soft: 0 24px 80px rgba(0, 0, 0, 0.35);
 
-  --layout-max: 1100px;
-  --content-max: 65ch;
+  --layout-max: 1380px;
+  --layout-wide: min(1560px, 94vw);
+  --content-max: 72ch;
   --header-h: 3.75rem;
   --scene-mobile-vh: 55vh;
   --z-scene: 0;
   --z-content: 1;
+
+  /* Lusion / Oryzo inspired glass surfaces */
+  --glass-card-bg: rgba(16, 16, 22, 0.72);
+  --glass-card-border: rgba(255, 255, 255, 0.08);
+  --glass-card-border-hover: rgba(255, 255, 255, 0.2);
+  --glass-card-glow: 0 24px 60px rgba(0, 0, 0, 0.5), 0 0 35px var(--color-accent-soft);
 }
 
 /* System auto-detection: apply light tokens unless user has forced dark */
@@ -46,6 +53,10 @@
     --color-panel-border: rgba(0, 0, 0, 0.08);
     --color-text-primary: #1d1d1f;
     --color-text-muted: #6e6e73;
+    --glass-card-bg: rgba(255, 255, 255, 0.88);
+    --glass-card-border: rgba(0, 0, 0, 0.08);
+    --glass-card-border-hover: rgba(0, 0, 0, 0.18);
+    --glass-card-glow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 0 25px var(--color-accent-soft);
   }
 }
 
@@ -58,6 +69,10 @@
   --color-panel-border: rgba(0, 0, 0, 0.08);
   --color-text-primary: #1d1d1f;
   --color-text-muted: #6e6e73;
+  --glass-card-bg: rgba(255, 255, 255, 0.88);
+  --glass-card-border: rgba(0, 0, 0, 0.08);
+  --glass-card-border-hover: rgba(0, 0, 0, 0.18);
+  --glass-card-glow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 0 25px var(--color-accent-soft);
 }
 
 /* Explicit dark override (data-theme="dark" on <html>) */
